@@ -6,15 +6,15 @@
 *       (if additional are added, keep them at the very end!)
 */
 
-var chaiHttp = require('chai-http');
-var chai = require('chai');
-var assert = chai.assert;
-var server = require('../server');
+const chaiHttp = require('chai-http');
+const chai = require('chai');
+const assert = chai.assert;
+const server = require('../server');
 
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
-  
+
     suite('POST /api/issues/{project} => object with issue data', function() {
       
       test('Every field filled in', function(done) {
@@ -27,21 +27,52 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
-        .end(function(err, res){
+        .end(function(err, res) {
           assert.equal(res.status, 200);
-          
-          //fill me in too!
-          
+          assert.hasAllKeys(res.body, ['issue_title', 'issue_text', 'created_by', 'assigned_to', 'status_text', 'created_on', 'updated_on', 'open', '_id']);
+          assert.equal(res.body.issue_title, 'Title');
+          assert.equal(res.body.issue_text, 'text');
+          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
+          assert.equal(res.body.assigned_to, 'Chai and Mocha');
+          assert.equal(res.body.status_text, 'In QA');
+          assert.equal(res.body.open, false);
           done();
         });
       });
       
       test('Required fields filled in', function(done) {
-        
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'Title',
+            issue_text: 'text',
+            created_by: 'Functional Test - Required fields filled in'
+          })
+          .end(function(err, res) {
+            assert.hasAllKeys(res.body, ['issue_title', 'issue_text', 'created_by', 'assigned_to', 'status_text', 'created_on', 'updated_on', 'open', '_id']);
+            assert.equal(res.body.issue_title, 'Title');
+            assert.equal(res.body.issue_text, 'text');
+            assert.equal(res.body.created_by, 'Functional Test - Required fields filled in');
+            assert.equal(res.body.assigned_to, '');
+            assert.equal(res.body.status_text, '');
+            assert.equal(res.body.open, false);
+            done();
+          });
       });
       
       test('Missing required fields', function(done) {
-        
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'Title',
+            created_by: 'Functional Test - Missing required fields'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 400);
+            assert.property(res.body, error_message);
+            assert.propertyVal(res.body, 'error_message', 'missing required fields');
+            done();
+          });
       });
       
     });
