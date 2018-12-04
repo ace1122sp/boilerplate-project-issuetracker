@@ -78,27 +78,82 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT /api/issues/{project} => text', function() {
-      
+      let issueId = null;
+      before(function () {
+        const db = new Connection();
+        const issue = new Issue({
+          issue_title: 'put-test',
+          issue_text: 'put-test',
+          created_by: 'put-test-before-hook'
+        });
+        db.save(issue)
+          .then(rec => {
+            issueId = rec._id;
+          })
+          .err(err => console.error(err.stack));
+      });
+
       test('No body', function(done) {        
         chai.request(server)        
           .put('/api/issues/test')
-          .send({
-            _id: 
-          })
+          .send({})
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'message');
+            assert.propertyValue(res.body, 'message', 'no updated field sent');
+            done();
+          });
       });
       
       test('One field to update', function(done) {
-        
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: issueId,
+            issue_title: 'new-title'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'message');
+            assert.propertyValue(res.body, 'message', `successfully updated ${issueId}`);
+            done();
+          });
       });
       
       test('Multiple fields to update', function(done) {
-        
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: issueId,
+            issue_title: 'new title',
+            issue_text: 'new text'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'message');
+            assert.propertyValue(res.body, 'message', `successfully updated ${issueId}`);
+            done();
+          });
       });
       
     });
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
-      
+      before(function () {
+        const db = new Connection();
+        const issue = new Issue({
+          issue_title: 'get-test',
+          issue_text: 'get-test',
+          created_by: 'get-test-before-hook'
+        });
+
+        db.save(issue)
+          .then(rec => {
+            console.log('created test issue');
+          })
+          .err(err => console.error(err.stack));
+      });
+
       test('No filter', function(done) {
         chai.request(server)
         .get('/api/issues/test')
@@ -120,11 +175,43 @@ suite('Functional Tests', function() {
       });
       
       test('One filter', function(done) {
-        
+        chai.request(server)
+          .get('/api/issues/test')
+          .query({ created_by: 'get-test-before-hook' })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.property(res.body[0], 'issue_title');
+            assert.property(res.body[0], 'issue_text');
+            assert.property(res.body[0], 'created_on');
+            assert.property(res.body[0], 'updated_on');
+            assert.property(res.body[0], 'created_by');
+            assert.property(res.body[0], 'assigned_to');
+            assert.property(res.body[0], 'open');
+            assert.property(res.body[0], 'status_text');
+            assert.property(res.body[0], '_id');
+            done();
+          });
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        
+        chai.request(server)
+          .get('/api/issues/test')
+          .query({ issue_title: 'get-test', issue_text: 'get-text' })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.property(res.body[0], 'issue_title');
+            assert.property(res.body[0], 'issue_text');
+            assert.property(res.body[0], 'created_on');
+            assert.property(res.body[0], 'updated_on');
+            assert.property(res.body[0], 'created_by');
+            assert.property(res.body[0], 'assigned_to');
+            assert.property(res.body[0], 'open');
+            assert.property(res.body[0], 'status_text');
+            assert.property(res.body[0], '_id');
+            done();
+          });
       });
       
     });
