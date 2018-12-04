@@ -217,13 +217,45 @@ suite('Functional Tests', function() {
     });
     
     suite('DELETE /api/issues/{project} => text', function() {
-      
+      let issueId = null;
+      before(function () {
+        const db = new Connection();
+        const issue = new Issue({
+          issue_title: 'get-test',
+          issue_text: 'get-test',
+          created_by: 'get-test-before-hook'
+        });
+
+        db.save(issue)
+          .then(rec => {
+            issueId = rec._id;
+            console.log('created test issue');
+          })
+          .err(err => console.error(err.stack));
+      });
+
       test('No _id', function(done) {
-        
+        chai.request(server)
+          .get('/api/issues/test')
+          .query({ _id: 'fake-id' })
+          .end(function(err, res) {
+            assert.equal(res.status, 404);
+            assert.property(res.body, 'message');
+            assert.propertyVal(res.body, 'message', 'could not delete fake-id');
+            done();
+          });
       });
       
       test('Valid _id', function(done) {
-        
+        chai.request(server)
+          .get('/api/issues/test')
+          .query({ _id: issueId })
+          .end(function(err, res) {
+            assert.equal(res.status, 204);
+            assert.property(res.body, 'message');
+            assert.propertyValue(res.body, 'message', `deleted ${issueId}`);
+            done();
+          });
       });
       
     });
