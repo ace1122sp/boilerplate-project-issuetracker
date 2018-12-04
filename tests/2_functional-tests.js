@@ -10,6 +10,9 @@ const chaiHttp = require('chai-http');
 const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
+const mongoose = require('mongoose');
+
+const Issue = require('../models/issue');
 
 chai.use(chaiHttp);
 
@@ -80,17 +83,16 @@ suite('Functional Tests', function() {
     suite('PUT /api/issues/{project} => text', function() {
       let issueId = null;
       before(function () {
-        const db = new Connection();
         const issue = new Issue({
           issue_title: 'put-test',
           issue_text: 'put-test',
           created_by: 'put-test-before-hook'
         });
-        db.save(issue)
+        issue.save()
           .then(rec => {
             issueId = rec._id;
           })
-          .err(err => console.error(err.stack));
+          .catch(err => console.error(err.stack));
       });
 
       test('No body', function(done) {        
@@ -139,19 +141,18 @@ suite('Functional Tests', function() {
     });
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
-      before(function () {
-        const db = new Connection();
+      before(function () {        
         const issue = new Issue({
           issue_title: 'get-test',
           issue_text: 'get-test',
           created_by: 'get-test-before-hook'
         });
 
-        db.save(issue)
+        issue.save()
           .then(rec => {
             console.log('created test issue');
           })
-          .err(err => console.error(err.stack));
+          .catch(err => console.error(err.stack));
       });
 
       test('No filter', function(done) {
@@ -219,19 +220,18 @@ suite('Functional Tests', function() {
     suite('DELETE /api/issues/{project} => text', function() {
       let issueId = null;
       before(function () {
-        const db = new Connection();
         const issue = new Issue({
           issue_title: 'get-test',
           issue_text: 'get-test',
           created_by: 'get-test-before-hook'
         });
 
-        db.save(issue)
+        issue.save()
           .then(rec => {
             issueId = rec._id;
             console.log('created test issue');
           })
-          .err(err => console.error(err.stack));
+          .catch(err => console.error(err.stack));
       });
 
       test('No _id', function(done) {

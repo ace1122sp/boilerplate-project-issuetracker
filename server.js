@@ -6,10 +6,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const expect = require('chai').expect;
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 const apiRoutes = require('./routes/api.js');
 const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner');
+
+// connect to database
+const mongoOptions = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  promiseLibrary: global.Promise
+}
+mongoose.connect(process.env.DB, mongoOptions)
+  .then(() => console.log('connected successfully to mongodb'))
+  .catch(err => {
+    console.error(err.stack);
+    process.exit(1);
+  });
 
 const app = express();
 

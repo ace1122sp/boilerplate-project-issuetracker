@@ -42,7 +42,7 @@ const IssueSchema = new Schema({
     max: 30
   },
   open: {
-    type: boolean,
+    type: Boolean,
     default: true
   }
 });
