@@ -239,7 +239,7 @@ suite('Functional Tests', function() {
           .get('/api/issues/test')
           .query({ _id: 'fake-id' })
           .end(function(err, res) {
-            assert.equal(res.status, 404);
+            assert.equal(res.status, 200);
             assert.property(res.body, 'message');
             assert.propertyVal(res.body, 'message', 'could not delete fake-id');
             done();
@@ -251,7 +251,7 @@ suite('Functional Tests', function() {
           .get('/api/issues/test')
           .query({ _id: issueId })
           .end(function(err, res) {
-            assert.equal(res.status, 204);
+            assert.equal(res.status, 200);
             assert.property(res.body, 'message');
             assert.propertyValue(res.body, 'message', `deleted ${issueId}`);
             done();

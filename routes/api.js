@@ -8,34 +8,15 @@
 
 'use strict';
 
-var expect = require('chai').expect;
-var MongoClient = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
+const expect = require('chai').expect;
 
-const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+const { getAllIssues, postIssue, putIssue, deleteIssue } = require('../controllers/issueControllers');
 
 module.exports = function (app) {
 
-  app.route('/api/issues/:project')
-  
-    .get(function (req, res){
-      var project = req.params.project;
-      
-    })
-    
-    .post(function (req, res){
-      var project = req.params.project;
-      
-    })
-    
-    .put(function (req, res){
-      var project = req.params.project;
-      
-    })
-    
-    .delete(function (req, res){
-      var project = req.params.project;
-      
-    });
-    
+  app.route('/api/issues/:project')  
+    .get(getAllIssues)    
+    .post(postIssue)    
+    .put(putIssue)    
+    .delete(deleteIssue);
 };
