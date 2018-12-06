@@ -11,7 +11,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
 
-const Issue = require('../models/issue').Issue;
+const Issue = require('../models/issue');
 
 chai.use(chaiHttp);
 
@@ -207,7 +207,7 @@ suite('Functional Tests', function() {
       test('One filter', function(done) {
         chai.request(server)
           .get('/api/issues/test')
-          .query({ created_by: 'get-test-before-hook' })
+          .query({ issue_text: 'test-hook' })
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.isArray(res.body);
@@ -227,7 +227,7 @@ suite('Functional Tests', function() {
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         chai.request(server)
           .get('/api/issues/test')
-          .query({ issue_title: 'get-test', issue_text: 'get-test' })
+          .query({ issue_text: 'test-hook', created_by: 'test-hook' })
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.isArray(res.body);
