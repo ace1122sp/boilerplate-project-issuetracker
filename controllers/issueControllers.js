@@ -34,8 +34,8 @@ const postIssue = function(req, res) {
       res.json(doc);
     })
     .catch(function(err) {
-      console.log(err);
-      res.sendStatus(500);
+      console.log(err.message);
+      res.json({ message: 'missing required fields' });
     });
   
 }
@@ -51,7 +51,7 @@ const putIssue = function(req, res) {
 
   update.updated_on = new Date().toLocaleString();
 
-  const updateExists = Object.keys(update).length > 2;
+  const updateExists = Object.keys(update).length > 1;
   
   if (updateExists) {
     Issue.findByIdAndUpdate(req.body._id, update, { new: true })

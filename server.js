@@ -16,7 +16,8 @@ const runner = require('./test-runner');
 const mongoOptions = {
   useNewUrlParser: true,
   useCreateIndex: true,
-  promiseLibrary: global.Promise
+  promiseLibrary: global.Promise,
+  useFindAndModify: false
 }
 mongoose.connect(process.env.DB, mongoOptions)
   .then(() => console.log('connected successfully to mongodb'))

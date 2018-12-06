@@ -23,23 +23,23 @@ const IssueSchema = new Schema({
   },
   assigned_to: {
     type: String,
+    default: '',
     min: 1,
     max: 30
   },
   status_text: {
     type: String,
+    default: '',
     min: 1,
     max: 30
   },
   created_on: {
     type: String,
-    min: 30, // check ms length
-    max: 30
+    default: new Date().toLocaleString()
   },
   updated_on: {
     type: String,
-    min: 30, // check ms length
-    max: 30
+    default: new Date().toLocaleString()
   },
   open: {
     type: Boolean,
