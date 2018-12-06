@@ -9,4 +9,4 @@ Project Issue Tracker
 4) You will create all of the functional tests in `tests/2_functional-tests.js`
 
 -----
-# [https://serious-felidae.glitch.me/](live app)
+### [live app link](https://serious-felidae.glitch.me/)
