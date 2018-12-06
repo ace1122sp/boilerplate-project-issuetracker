@@ -23,8 +23,8 @@ const postIssue = function(req, res) {
     created_by: req.body.created_by,
     assigned_to: req.body.assigned_to,
     status_text: req.body.status_text,
-    created_on: new Date().toLocaleString(),
-    updated_on: new Date().toLocaleString()    
+    created_on: new Date(),
+    updated_on: new Date()
   });
 
   issue.save()
@@ -48,7 +48,7 @@ const putIssue = function(req, res) {
     });
   }
 
-  update.updated_on = new Date().toLocaleString();
+  update.updated_on = new Date();
 
   const updateExists = Object.keys(update).length > 1;
   
