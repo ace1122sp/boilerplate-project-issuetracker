@@ -35,11 +35,11 @@ const IssueSchema = new Schema({
   },
   created_on: {
     type: String,
-    default: new Date().toLocaleString()
+    default: new Date()
   },
   updated_on: {
     type: String,
-    default: new Date().toLocaleString()
+    default: new Date()
   },
   open: {
     type: Boolean,
