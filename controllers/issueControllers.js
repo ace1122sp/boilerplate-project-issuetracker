@@ -3,7 +3,19 @@ const Project = require('../models/project');
 
 // validation and sanitize middlewares will pass only valid req
 // if required fields are missing --> { message: 'missing required fields' }
-const getAllIssues = function(req, res) {}
+const getIssues = function(req, res) {
+  const filters = req.query; // this needs to be sanitized
+
+  Issue.find(filters)
+    .then(function(recs) {
+      console.log('returned all issues');
+      res.json(recs);
+    })
+    .catch(function(err) {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
+}
 const postIssue = function(req, res) {
   const project = req.params.project;
   const issue = new Issue({
@@ -77,7 +89,7 @@ const deleteIssue = function(req, res) {
 }
 
 module.exports = {
-  getAllIssues, 
+  getIssues, 
   postIssue,
   putIssue,
   deleteIssue
