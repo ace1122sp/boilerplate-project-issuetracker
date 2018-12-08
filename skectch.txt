@@ -1,0 +1,7 @@
+- opcija da kreiras novi projekat
+- kada udjes na projekat page --> gledas sve issue
+- za svaki issue su opcije: get, edit, delete
+
+- home page automatski ucitava prvih n projekata, sa opcijom add_more
+
+- dodatni req handleri: get--> new issue, new project, edit issue 

@@ -283,5 +283,11 @@ suite('Functional Tests', function() {
       
     });
 
+    suite('POST /api/projects/ => text', function() {});
+
+    suite('DELETE /api/projects/ => text', function() {});
+
+    suite('GET /projects/{project} => project page', function() {});
+
 });
 

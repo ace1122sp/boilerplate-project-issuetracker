@@ -8,10 +8,13 @@ const expect = require('chai').expect;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const morgan = require('morgan');
 
 const apiRoutes = require('./routes/api.js');
 const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner');
+
+const PORT = process.env.PORT || 3000;
 
 // connect to database
 const mongoOptions = {
@@ -33,7 +36,7 @@ app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(helmet());
-
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -63,9 +66,9 @@ app.use(function(req, res, next) {
 });
 
 //Start our server and tests!
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Listening on port " + process.env.PORT);
-  if(process.env.NODE_ENV==='test') {
+app.listen(PORT, function () {
+  console.log('Listening on port ' + PORT);
+  if(process.env.NODE_ENV === 'test') {
     console.log('Running Tests...');
     setTimeout(function () {
       try {
