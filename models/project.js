@@ -3,14 +3,14 @@ mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema({
-  name: {
+  project_name: {
     type: String, 
     required: true,
     min: 1,
     max: 30
   },
   issues: [{
-      type: [ObjectId],
+      type: [Schema.Types.ObjectId],
       ref: 'Issue',
     }
   ]

@@ -7,7 +7,7 @@ const getIssues = function(req, res) {
 
   Issue.find(filters)
     .then(function(recs) {
-      console.log('returned all issues');
+      console.log('all issues returned');
       res.json(recs);
     })
     .catch(function(err) {

@@ -48,7 +48,7 @@ const deleteTestIssue = function(done, filter) {
 
 suite('Functional Tests', function() {
 
-    suite('POST /api/issues/{project} => object with issue data', function() {
+    suite.skip('POST /api/issues/{project} => object with issue data', function() {
       let issue_title = `test-title${Date.now()}`;
 
       afterEach(function(done) {
@@ -113,7 +113,7 @@ suite('Functional Tests', function() {
       
     });
     
-    suite('PUT /api/issues/{project} => text', function() {
+    suite.skip('PUT /api/issues/{project} => text', function() {
       let testId;
       let issue_title = `test-title${Date.now()}`;
 
@@ -173,7 +173,7 @@ suite('Functional Tests', function() {
       
     });
 
-    suite('GET /api/issues/{project} => Array of objects with issue data', function() {      
+    suite.skip('GET /api/issues/{project} => Array of objects with issue data', function() {      
       let issue_title = `test-title${Date.now()}`;
             
       before(function(done) {
@@ -246,7 +246,7 @@ suite('Functional Tests', function() {
       
     });
     
-    suite('DELETE /api/issues/{project} => text', function() {
+    suite.skip('DELETE /api/issues/{project} => text', function() {
       let testId;
       let issue_title = `test-title${Date.now()}`;
 
@@ -283,11 +283,56 @@ suite('Functional Tests', function() {
       
     });
 
-    suite('POST /api/projects/ => text', function() {});
+    suite('POST /api/projects/ => text', function() {
+      test('Project name sent', function(done) {
+        chai.request(server)
+          .post('/api/projects/')
+          .send({
+            project_name: 'test-new-project'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.message, 'created project test-new-project');
+            done();
+          });
+      });
+    });
 
-    suite('DELETE /api/projects/ => text', function() {});
+    suite('GET /api/projects/ => Array of projects', function() {
+      test('Valid response from API', function(done) {
+        chai.request(server)
+          .get('/api/projects')
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body.projects);
+            done();
+          });
+      });
+    });
 
-    suite('GET /projects/{project} => project page', function() {});
+    suite('DELETE /api/projects/ => text', function() {
+      // napisi before da kreiras projekat, pa ga onda brisi
+      // napisi test kada proba da brise nepostojeci projekat
+      test('Project name sent', function(done) {
+        chai.request(server)
+          .delete('/api/projects/test-project-delete')
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.message, 'project test-project-delete deleted');
+            done();
+          });
+      });
+    });
 
+    suite('GET /projects/{project} => project page', function() {
+      test('Get project page', function(done) {
+        chai.request(server)
+          .get('/{project}')
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            done();
+          });
+      });
+    });
 });
 

@@ -10,9 +10,18 @@
   <body>
     <header>
       <h1>
-        ISQA_4 - Issue Tracker
-      </h1>
+        <a href="/">ISQA_4 - Issue Tracker</a>
+      </h1>      
     </header>
-      
+    <form action="api/projects" method="POST">
+      <label for="project_name">enter project name: </label>
+      <input type="text" name="project_name" id="project_name">
+      <button type="submit">add project</button>
+    </form>
+    <br />
+    <label for="delete_project">delete project</label>
+    <input type="text" name="delete_project" id="delete_project"> 
+    <button onclick="deleteProject()">delete project</button>
+    <script src="public/js/index.js"></script>
   </body>
 </html>

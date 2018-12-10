@@ -3,6 +3,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const expect = require('chai').expect;
 const cors = require('cors');
@@ -43,7 +44,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Sample front-end
 app.route('/:project/')
   .get(function (req, res) {
-    res.sendFile(process.cwd() + '/views/issue.html');
+    // res.sendFile(process.cwd() + '/views/issue.html');
+    res.sendFile(path.resolve(__dirname, 'views', 'project.html'));
   });
 
 //Index page (static HTML)
