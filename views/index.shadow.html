@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to HyperDev!</title>
+    <meta name="description" content="A cool thing made with HyperDev">    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- temporary style file -->
+    <link rel="stylesheet" href="public/css/main.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="/">ISQA_4 - Issue Tracker</a>
+      </h1>      
+      <form action="api/projects" method="POST">
+        <input type="text" name="project_name" id="project_name">
+        <button type="submit">add project</button>
+      </form>    
+    </header>
+    <main>
+      <div id='loading-div'></div>
+      <div class='index-content'>
+        <div class='projects'></div>
+        <div>
+          <button id='load-more'>load more</button>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+    <script src="public/js/index.js"></script>
+  </body>
+</html>
