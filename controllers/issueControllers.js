@@ -2,7 +2,6 @@ const Project = require('../models/project');
 const Issue = require('../models/issue');
 
 // validation and sanitize middlewares will pass only valid req
-// if required fields are missing --> { message: 'missing required fields' }
 const getIssues = function(req, res) {
   const filters = req.query; // this needs to be sanitized
 
