@@ -12,6 +12,7 @@ const assert = chai.assert;
 const server = require('../server');
 
 const Issue = require('../models/issue');
+const Project = require('../models/project');
 
 chai.use(chaiHttp);
 
@@ -30,6 +31,7 @@ const createTestIssue = function(done, issue_title, cb) {
     })
     .catch(function(err) {
       console.error(err.message);
+      done();
     });
 }
 
@@ -46,9 +48,38 @@ const deleteTestIssue = function(done, filter) {
     });
 }
 
+const createTestProject = function(done, project_name) {
+  const project = new Project({
+    project_name
+  });
+
+  project.save()
+    .then(function(rec) {
+      console.log(`created test project ${project_name}`);
+      done();
+    })
+    .catch(function(err) {
+      console.error(err.message);
+      done();
+    });
+}
+
+const deleteTestProject = function(done, filter) {
+  const filterKey = Object.keys(filter)[0];
+  Project.findOneAndDelete(filter)
+    .then(function(rec) {
+      console.log(`test project ${rec[filterKey]} deleted`);
+      done();
+    })
+    .catch(function(err) {
+      console.error(err.message);
+      done();
+    });
+}
+
 suite('Functional Tests', function() {
 
-    suite.skip('POST /api/issues/{project} => object with issue data', function() {
+    suite('POST /api/issues/{project} => object with issue data', function() {
       let issue_title = `test-title${Date.now()}`;
 
       afterEach(function(done) {
@@ -113,7 +144,7 @@ suite('Functional Tests', function() {
       
     });
     
-    suite.skip('PUT /api/issues/{project} => text', function() {
+    suite('PUT /api/issues/{project} => text', function() {
       let testId;
       let issue_title = `test-title${Date.now()}`;
 
@@ -173,7 +204,7 @@ suite('Functional Tests', function() {
       
     });
 
-    suite.skip('GET /api/issues/{project} => Array of objects with issue data', function() {      
+    suite('GET /api/issues/{project} => Array of objects with issue data', function() {      
       let issue_title = `test-title${Date.now()}`;
             
       before(function(done) {
@@ -246,11 +277,11 @@ suite('Functional Tests', function() {
       
     });
     
-    suite.skip('DELETE /api/issues/{project} => text', function() {
+    suite('DELETE /api/issues/{project} => text', function() {
       let testId;
       let issue_title = `test-title${Date.now()}`;
 
-      before(function (done) {
+      before(function(done) {
         createTestIssue(done, issue_title, function(id) {
           testId = id;
           return;
@@ -284,18 +315,37 @@ suite('Functional Tests', function() {
     });
 
     suite('POST /api/projects/ => text', function() {
-      test('Project name sent', function(done) {
+      const testProjectName = 'test-post-project-name' + Date.now();
+      
+      after(function(done) {
+        deleteTestProject(done, { project_name: testProjectName });
+      });
+
+      test('New project name sent', function(done) {
         chai.request(server)
           .post('/api/projects/')
           .send({
-            project_name: 'test-new-project'
+            project_name: testProjectName
           })
           .end(function(err, res) {
             assert.equal(res.status, 200);
-            assert.equal(res.body.message, 'created project test-new-project');
+            assert.equal(res.body.message, `project ${testProjectName} created`);
             done();
           });
       });
+
+      test('Existing project name sent', function(done) {
+        chai.request(server)
+          .post('/api/projects')
+          .send({
+            project_name: testProjectName
+          })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.message, `project ${testProjectName} already exists`);
+            done();
+          });
+      })
     });
 
     suite('GET /api/projects/ => Array of projects', function() {
@@ -310,18 +360,33 @@ suite('Functional Tests', function() {
       });
     });
 
-    suite('DELETE /api/projects/ => text', function() {
-      // napisi before da kreiras projekat, pa ga onda brisi
-      // napisi test kada proba da brise nepostojeci projekat
-      test('Project name sent', function(done) {
+    suite('DELETE /api/projects/{project} => text', function() {
+      const testProjectName = 'test-delete-project-name';
+      const testNonProjectName = 'test-delete-non-project-name';
+
+      before(function(done) {
+        createTestProject(done, testProjectName);        
+      });
+
+      test('Endpoint with existing project', function(done) {
         chai.request(server)
-          .delete('/api/projects/test-project-delete')
+          .delete(`/api/projects/${testProjectName}`)
           .end(function(err, res) {
             assert.equal(res.status, 200);
-            assert.equal(res.body.message, 'project test-project-delete deleted');
+            assert.equal(res.body.message, `project ${testProjectName} deleted`);
             done();
           });
       });
+
+      test('Endpoint with non-existing project', function(done) {
+        chai.request(server)
+          .delete(`/api/projects/${testNonProjectName}`)
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.message, `project ${testNonProjectName} not found`);
+            done();
+          });
+      })
     });
 
     suite('GET /projects/{project} => project page', function() {

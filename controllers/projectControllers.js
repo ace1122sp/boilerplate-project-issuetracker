@@ -3,8 +3,8 @@ const Project = require('../models/project');
 const getProjects = function(req, res) {
   Project.find({})
     .then(function(recs) {
-      console.log('projects returned'); // limit ???
-      res.json(recs);
+      console.log('projects returned'); // limit ???      
+      res.json({ projects: recs });
     })
     .catch(function(err) {
       console.error(err.message);
@@ -17,7 +17,9 @@ const addProject = function(req, res) {
   Project.find({ project_name })
     .then(rec => {
       if (rec.length) {
-        res.json(rec);
+        let message = `project ${rec[0].project_name} already exists`;
+        console.log(message);
+        res.json({ message });
       } else {        
         let project = new Project({ project_name });
         project.save()
