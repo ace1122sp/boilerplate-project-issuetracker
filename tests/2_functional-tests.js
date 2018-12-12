@@ -277,7 +277,7 @@ suite('Functional Tests', function() {
       
     });
     
-    suite('DELETE /api/issues/{project} => text', function() {
+    suite('DELETE /api/issues/{project}/:issue => text', function() {
       let testId;
       let issue_title = `test-title${Date.now()}`;
 
@@ -290,8 +290,7 @@ suite('Functional Tests', function() {
 
       test('No _id', function(done) {
         chai.request(server)
-          .delete('/api/issues/test')
-          .send({ _id: 'fake-id' })
+          .delete(`/api/issues/test/fake-id`)
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.property(res.body, 'message');
@@ -302,8 +301,7 @@ suite('Functional Tests', function() {
       
       test('Valid _id', function(done) {
         chai.request(server)
-          .delete('/api/issues/test')
-          .send({ _id: testId })
+          .delete(`/api/issues/test/${testId}`)
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.property(res.body, 'message');

@@ -11,7 +11,7 @@
 const expect = require('chai').expect;
 
 const { getIssues, postIssue, putIssue, deleteIssue } = require('../controllers/issueControllers');
-const { getProjects, addProject, removeProject } = require('../controllers/projectControllers');
+const { getProjects, addProject, removeProject, getProject } = require('../controllers/projectControllers');
 
 module.exports = function (app) {
 
@@ -19,6 +19,8 @@ module.exports = function (app) {
     .get(getIssues)    
     .post(postIssue)    
     .put(putIssue)    
+    
+  app.route('/api/issues/:project/:issue')
     .delete(deleteIssue);
 
   app.route('/api/projects/')
@@ -26,5 +28,6 @@ module.exports = function (app) {
     .post(addProject) 
     
   app.route('/api/projects/:project')
+    .get(getProject)
     .delete(removeProject);
 };

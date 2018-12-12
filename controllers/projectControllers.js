@@ -11,13 +11,31 @@ const getProjects = function(req, res) {
       res.sendStatus(500);
     });
 }
+const getProject = function(req, res) {
+  const project_name = req.params.project.toString();
+  Project.findOne({ project_name })
+    .populate('issues')
+    .then(function(rec) {
+      if (rec) {
+        console.log(rec);
+        res.json(rec);
+      } else {
+        console.log(rec);
+        res.sendStatus(404);
+      }
+    })
+    .catch(function(err) {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
+}
 const addProject = function(req, res) {
   const project_name = req.body.project_name.toString();
 
-  Project.find({ project_name })
+  Project.findOne({ project_name })
     .then(rec => {
-      if (rec.length) {
-        let message = `project ${rec[0].project_name} already exists`;
+      if (rec) {
+        let message = `project ${rec.project_name} already exists`;
         console.log(message);
         res.json({ message });
       } else {        
@@ -58,4 +76,4 @@ const removeProject = function(req, res) {
     });
 }
 
-module.exports = { getProjects, addProject, removeProject };
+module.exports = { getProjects, addProject, removeProject, getProject };

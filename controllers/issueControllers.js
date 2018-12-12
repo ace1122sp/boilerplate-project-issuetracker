@@ -1,3 +1,4 @@
+const Project = require('../models/project');
 const Issue = require('../models/issue');
 
 // validation and sanitize middlewares will pass only valid req
@@ -16,7 +17,7 @@ const getIssues = function(req, res) {
     });
 }
 const postIssue = function(req, res) {
-  const project = req.params.project;
+  const project_name = req.params.project.toString();
   const issue = new Issue({
     issue_title: req.body.issue_title,
     issue_text: req.body.issue_text,
@@ -29,8 +30,11 @@ const postIssue = function(req, res) {
 
   issue.save()
     .then(function(doc) {
-      console.log('issue created: ', doc);
-      res.json(doc);
+      Project.findOneAndUpdate({ project_name }, { $push: { issues: doc._id } })
+      .then(function(proj) {
+        console.log('issue created: ', doc);      
+        res.json(doc);      
+      }); // catch ??
     })
     .catch(function(err) {
       console.log(err.message);
@@ -69,15 +73,16 @@ const putIssue = function(req, res) {
   }
 }
 const deleteIssue = function(req, res) {
-  if (req.body._id) {
-    Issue.findByIdAndDelete(req.body._id)
-      .then(function (rec) {
-        const message = `deleted ${req.body._id}`;
+  const _id = req.params.issue.toString()
+  if (_id) {
+    Issue.findByIdAndDelete(_id)
+      .then(function(rec) {
+        const message = `deleted ${_id}`;
         console.log(message);
         res.json({ message });
       })
       .catch(function (err) {
-        const message = `could not delete ${req.body._id}`;
+        const message = `could not delete ${_id}`;
         console.error(err.message);
         res.json({ message });
       });
