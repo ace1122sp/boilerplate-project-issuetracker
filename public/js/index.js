@@ -1,9 +1,11 @@
 (function() {
   const model = {    
     init: function() {
-      fetch('/api/projects');
+      this.projects = {};
     },
-    getProjects: function() {}
+    getProjects: function() {},
+    addProject: function() {},
+    removeProject: function() {}
   }
   const view = {
     init: function() {
@@ -30,15 +32,20 @@
         let projectElement = createProjectElm(project);
         this.projects.appendChild(projectElement);
       });
-    }
+    },
+    renderAdd: function() {},
+    renderRemove: function() {}
   }
   const octopus = {
     init: function() {
+      model.init();
       view.init();      
     },
     getProjects: function(offset) {
       model.getProjects(offset);
-    }
+    },
+    addProject: function() {},
+    removeProject: function() {}
   }
 
   octopus.init();
