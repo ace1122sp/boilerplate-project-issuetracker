@@ -2,6 +2,7 @@ const Project = require('../models/project');
 
 const getProjects = function(req, res) {
   Project.find({})
+    .select({ project_name: 1, _id: 0 })
     .then(function(recs) {
       console.log('projects returned'); // limit ???      
       res.json({ projects: recs });
@@ -30,6 +31,7 @@ const getProject = function(req, res) {
     });
 }
 const addProject = function(req, res) {
+  console.log(req.body)
   const project_name = req.body.project_name.toString();
 
   Project.findOne({ project_name })

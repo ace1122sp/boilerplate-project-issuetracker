@@ -1,38 +1,43 @@
-(function() {
-  const model = {    
-    init: function() {
+(function () {
+  const model = {
+    projects: [],
+    init: function () {
       return fetch('/api/projects')
         .then(function(res) {
           return res.json();
         })
-        .then(function(res) {
-          this.projects = [...res];
+        .then(res => {
+          this.projects = res.projects.map(project => project.project_name);
+          return;
         })
         .catch(function(err) {
           throw new Error('oops something went wrong');
         });
     },
-    getProjects: function() {
+    getProjects: function () {   
       return this.projects;
     },
-    addProject: function(projectName) {
-      // da posalje na api novi projekat
-      // ako Ok --> doda projekat u this.projects
-      // ako fail --> ???
-      return fetch('/api/projects', { method: 'POST' })
+    addProject: function (project_name) {
+      // headers?      
+      const options = { 
+        method: 'POST', 
+        body: JSON.stringify({ project_name }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      return fetch('/api/projects', options)
         .then(res => res.json())
         .then(res => {
-          this.projects.push(res);
+          this.projects.push(project_name);
           return res;
         })
         .catch(err => {
           throw new Error('failed to add project');
         });
     },
-    removeProject: function(projectName) {
-      // da posalje delete req na api
-      // ako delete uspesan da izbrise projekat iz this.projects
-      // ako delete fail ---> ??? 
+    removeProject: function (projectName) {
+      // headers ???
       return fetch(`/api/projects/${projectName}`, { method: 'DELETE' })
         .then(() => {
           this.projects = this.projects.filter(project => project !== projectName);
@@ -44,99 +49,136 @@
     }
   }
   const view = {
-    init: function() {
-      
+    init: function () {
+
       // dom
       this.main = document.getElementsByTagName('main')[0];
       this.divLoading = document.getElementById('loading-div');
-      this.indexContent = document.getElementsByClassName('index-content')[0];
       this.projects = document.getElementsByClassName('projects')[0];
+      this.newProject = document.getElementById('new-project');
+      this.submitProjectBtn = document.getElementById('submit-project-btn');
+
+      // event listeners
+      this.submitProjectBtn.addEventListener('click', e => {
+        e.preventDefault();
+        octopus.addProject(this.newProject.value);
+        this.newProject.value = '';
+      });
 
     },
     _createProjectElm: function(project) {
       const container = document.createElement('div');
       container.setAttribute('class', 'project');
-      container.setAttribute('id', project.name + '-p');
+      container.setAttribute('id', project + '-p');
 
       const a = document.createElement('a');
-      a.setAttribute('href', `/${project.name}`);
-      a.innerText = project.name;
+      a.setAttribute('href', `/${project}`);
+      a.innerText = project;
 
       const btn = document.createElement('button');
-      btn.addEventListener('click', octopus.removeProject(project.name));
+      btn.innerText = 'X';
+      btn.addEventListener('click', function() {
+        octopus.removeProject(project);
+      });
 
       container.appendChild(a);
       container.appendChild(btn);
-    },      
-    render: function() {
-      this.divLoading.style.display = 'none';
-      this.indexContent.style.display = '';
 
-      const offset = document.getElementsByClassName('project').length;
-      const projects = octopus.getProjects(offset);    
-
-      // append project to dom
-      projects.forEach(function(project) {
-        let projectElement = _createProjectElm(project);
-        this.projects.appendChild(projectElement);
-      });
+      return container;
     },
-    renderAdd: function(projectName) {},
-    renderRemove: function(projectName) {
-      const project = document.getElementById(projectName + '-p');
-      
-      octopus.removeProject(projectName)
-        .then(function() {          
-          document.removeEventListener('click', octopus.removeProject);
-          this.projects.removeChild(project);
-        })
-        .catch(function(error) {
-          console.error(error.message);
+    render: function () {
+      this.divLoading.style.display = 'none';
+      this.projects.style.display = '';
+
+      const projects = octopus.getProjects();
+      // append project to dom
+        projects.forEach(project => {
+          let projectElement = view._createProjectElm(project);
+          this.projects.appendChild(projectElement);
         });
     },
+    renderAdd: function(projectName) {
+      let projectElm = this._createProjectElm(projectName);
+      this.projects.appendChild(projectElm);
+    },
+    renderRemove: function(projectName) {
+      const project = document.getElementById(projectName + '-p');
+      document.removeEventListener('click', octopus.removeProject);
+      this.projects.removeChild(project);
+    },
     renderErrorScreen: function(message) {
-      // da kreira div element sa paragraph ---> message
+      // error screen 
+      const divError = document.createElement('div');
+      divError.setAttribute('class', 'div-error');
+      
+      const p = document.createElement('p');
+      p.innerText = message;
+
+      // clear main element
+      while(this.main.hasChildNodes()) {
+        this.main.removeChild(this.main.firstChild);
+      }
+
+      // render error message
+      divError.appendChild(p);
+      this.main.appendChild(divError);
+    },
+    renderMessage: function(message) {
+
+      // message div
+      const div = document.createElement('div');
+      div.setAttribute('class', 'temp-info-div');
+
+      const p = document.createElement('p');
+      p.innerText = message;
+
+      // render message & remove message after 2sec
+      div.appendChild(p);
+      this.main.appendChild(div);
+
+      let timeout = setTimeout(() => {
+        this.main.removeChild(div);
+        clearTimeout(timeout);
+      }, 2000);
     }
   }
   const octopus = {
-    init: function() {
-      view.init();      
+    init: function () {
+      view.init();
       model.init()
-        .then(view.render())
-        .catch(function(err) {
+        .then(() => {
+          view.render();
+        })
+        .catch(function (err) {
           view.renderErrorScreen(err.message);
         });
     },
-    getProjects: function() {
-      model.getProjects();
+    getProjects: function () {
+      return model.getProjects();
     },
     addProject: function(projectName) {
       model.addProject(projectName)
-        .then(view.renderAdd(addedProject))
-        .catch(function(err) {
+        .then(res => {
+          const startIndex = res.message.length - 7;
+          const status = res.message.slice(startIndex);
+
+          view.renderMessage(res.message);
+          if (status === 'created') view.renderAdd(projectName);          
+        })
+        .catch(function (err) {
           console.error(err.message);
         });
     },
     removeProject: function(projectName) {
       model.removeProject(projectName)
-        .then(view.renderRemove(removedProject))
-        .catch(function(err) {
+        .then(removedProject => {
+          view.renderRemove(removedProject);
+        }) 
+        .catch(function (err) {
           console.error(err.message);
-        })
+        });
     }
   }
 
   octopus.init();
 })();
-
-// temp code
-
-const deleteProject = () => {
-  const deleteInput = document.getElementById('delete_project').value;
-
-  fetch(`api/projects/${deleteInput}`, {
-    method: 'DELETE'
-  }).then(res => res.json())
-    .then(res => console.log(res))
-    .catch(err => console.error(err.message));
-}
