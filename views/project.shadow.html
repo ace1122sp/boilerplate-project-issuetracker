@@ -7,38 +7,14 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>This is project page</h1>
-  <a href="/">go back to home</a>    
-
-  <form action="/api/issues/code101" method="POST">
-    <label for="issue_title">issue title: </label>
-    <input type="text" id="issue_title" name="issue_title">
-    <label for="issue_text">issue text: </label>
-    <input type="text" id="issue_text" name="issue_text">
-    <label for="created_by">created by: </label>
-    <input type="text" id="created_by" name="created_by">
-    <button type="submit">send issue</button>
-  </form>
-
-  <label for="_id">issue to delete id: </label>
-  <input type="text" name="_id" id="_id">
-  <button onclick="deleteIssue()">delete</button>
-
-  <script>    
-    fetch('api/projects/code101')
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err.message));
-
-
-      const deleteIssue = function() {
-        const issue = document.getElementById('_id').value;
-        fetch(`api/issues/code101/${issue}`, { method: 'DELETE' })
-          .then(res => console.log('deleted'))
-          .catch(err => console.error(err.message));
-      }
-  </script>
+  <header>
+    <h1>This is a project page</h1>
+    <a href="/">go back to home</a>      
+  </header>
+  <main>
+    
+  </main>
+  <footer></footer>
+  <script src="public/js/project.js"></script>
 </body>
 </html>
