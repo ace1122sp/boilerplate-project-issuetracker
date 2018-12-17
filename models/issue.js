@@ -44,6 +44,10 @@ const IssueSchema = new Schema({
   open: {
     type: Boolean,
     default: true
+  },
+  project: {
+    type: String,
+    required: true
   }
 });
 

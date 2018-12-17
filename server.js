@@ -44,8 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Sample front-end
 app.route('/:project/')
   .get(function (req, res) {
-    // res.sendFile(process.cwd() + '/views/issue.html');
-    res.sendFile(path.resolve(__dirname, 'views', 'project.html'));
+    res.sendFile(path.resolve(__dirname, 'views', 'project.shadow.html'));
   });
 
 //Index page (static HTML)
