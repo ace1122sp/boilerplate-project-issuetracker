@@ -4,6 +4,7 @@ const Issue = require('../models/issue');
 // validation and sanitize middlewares will pass only valid req
 const getIssues = function(req, res) {
   const filters = req.query; // this needs to be sanitized
+  filters.project = req.params.project;
 
   Issue.find(filters)
     .then(function(recs) {
@@ -24,7 +25,8 @@ const postIssue = function(req, res) {
     assigned_to: req.body.assigned_to,
     status_text: req.body.status_text,
     created_on: new Date(),
-    updated_on: new Date()
+    updated_on: new Date(),
+    project: project_name
   });
 
   issue.save()
