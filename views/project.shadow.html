@@ -8,6 +8,7 @@
   
   <!-- temporary style file -->
   <link rel="stylesheet" href="public/css/main.css">
+  <link rel="stylesheet" href="public/css/project.css">
 </head>
 <body>
   <header>
@@ -17,7 +18,15 @@
   </header>
   <main>
     <div id='loading-div'></div>
-    <div class='project'></div>
+    <div class='project'>
+      <div class='issue-list'>
+        <button id='filter-issues'>filter issues</button>
+      </div>      
+      <div class='issue-view'>
+        <h2></h2>
+        <div class='inner-issue-wrapper'></div>
+      </div>
+    </div>
   </main>
   <footer></footer>
   <script src="public/js/project.js"></script>
