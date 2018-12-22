@@ -37,7 +37,7 @@
       this.projectHeadline = document.querySelector('.issue-view h2');
       this.innerIssueWrapper = document.getElementsByClassName('inner-issue-wrapper');
       
-      this.title.innerText = location.pathname.slice(1);
+      this.title.innerText = location.pathname.slice(1).split('%20').join(' ');
 
       // event listeners
     },
