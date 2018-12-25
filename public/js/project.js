@@ -35,7 +35,7 @@
       this.project = document.getElementsByClassName('project')[0];
       this.filterBtn = document.getElementById('filter-issues');
       this.projectHeadline = document.querySelector('.issue-view h2');
-      this.innerIssueWrapper = document.getElementsByClassName('inner-issue-wrapper');
+      this.innerIssueWrapper = document.getElementsByClassName('inner-issue-wrapper')[0];
       
       this.title.innerText = location.pathname.slice(1).split('%20').join(' ');
 
@@ -78,7 +78,7 @@
     renderIssueView: function() {                
       this.projectHeadline.innerText = this.title.innerText;
     },
-    renderIssueCard: function(issueId) {
+    renderIssueCard: function(issueId) {      
       const issue = octopus.getIssue(issueId);
       
       // basic issue element factory
@@ -100,13 +100,13 @@
       const issueTitle = document.createElement('h3');
       issueTitle.innerText = issue.issue_title;
 
-      innerIssueWrapper.appendChild(issueTitle);
+      this.innerIssueWrapper.appendChild(issueTitle);
 
       // issue_text
       const issueText = document.createElement('p');
       issueText.innerText = issue.issue_text;
 
-      innerIssueWrapper.appendChild(issueText);
+      this.innerIssueWrapper.appendChild(issueText);
 
       // status_text
       const statusText = createIssueLabel('status text', issue.status_text);
@@ -125,7 +125,7 @@
       openDiv.appendChild(open);
       openDiv.appendChild(openBtn);
 
-      innerIssueWrapper.appendChild(openDiv);
+      this.innerIssueWrapper.appendChild(openDiv);
 
       // created_by
       const createdBy = createIssueLabel('created by', issue.created_by);
@@ -137,7 +137,7 @@
       const createdOn = createIssueLabel('created on', issue.created_on);
 
       // updated_on
-      const updatedOn = updateIssueLabel('updated on', issue.updated_on);
+      const updatedOn = createIssueLabel('updated on', issue.updated_on);
     },
     renderErrorScreen: function(message) {
       // error screen 
