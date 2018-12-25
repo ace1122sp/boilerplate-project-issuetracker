@@ -81,24 +81,63 @@
     renderIssueCard: function(issueId) {
       const issue = octopus.getIssue(issueId);
       
+      // basic issue element factory
+      const createIssueLabel = (category, value) => {
+        const p = document.createElement('p');
+        p.innerText = category + ': ';
+        p.setAttribute('id', 'issue-card-' + category);
+        const i = document.createElement('i');
+        i.innerText = value;
+
+        p.appendChild(i);
+
+        this.innerIssueWrapper.appendChild(p);
+      }
+
       // create elements 
+
+      // issue_title
       const issueTitle = document.createElement('h3');
       issueTitle.innerText = issue.issue_title;
 
+      innerIssueWrapper.appendChild(issueTitle);
+
+      // issue_text
       const issueText = document.createElement('p');
       issueText.innerText = issue.issue_text;
 
-      const status = document.createElement('div');
-      status.setAttribute('class', 'issue-status');    
-      const statusLabel = document.createElement('i');
-      statusLabel.innerText = 'status';
-      const statusText = document.createElement('p');
-      statusText.innerText = issue.status;
+      innerIssueWrapper.appendChild(issueText);
 
-      status.appendChild(statusLabel);
-      status.appendChild(statusText);
+      // status_text
+      const statusText = createIssueLabel('status text', issue.status_text);
 
-      const open = document.createElement('p');
+      // open 
+      const openDiv = document.createElement('div');
+      openDiv.setAttribute('id', 'open-div');
+      const open = document.createElement('label');
+      open.innerText = issue.open ? 'open' : 'closed';
+      const openBtn = document.createElement('button');
+      openBtn.setAttribute('id', 'openBtn');
+      const btnSwitch = document.createElement('i');
+      btnSwitch.setAttribute('id', 'btnSwitch');
+
+      openBtn.appendChild(btnSwitch);
+      openDiv.appendChild(open);
+      openDiv.appendChild(openBtn);
+
+      innerIssueWrapper.appendChild(openDiv);
+
+      // created_by
+      const createdBy = createIssueLabel('created by', issue.created_by);
+
+      // assigned_to
+      const assignedTo = createIssueLabel('assigned to', issue.assigned_to);
+      
+      // created_on
+      const createdOn = createIssueLabel('created on', issue.created_on);
+
+      // updated_on
+      const updatedOn = updateIssueLabel('updated on', issue.updated_on);
     },
     renderErrorScreen: function(message) {
       // error screen 

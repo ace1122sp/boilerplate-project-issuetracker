@@ -1,0 +1,1 @@
+- problem with urls when user uses special chars in project/issue name
