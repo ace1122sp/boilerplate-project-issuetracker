@@ -80,9 +80,10 @@
     },
     renderIssueCard: function(issueId) {      
       const issue = octopus.getIssue(issueId);
+      const elements = [];
       
-      // basic issue element factory
-      const createIssueLabel = (category, value) => {
+      // element generators
+      const _createLabel = (category, value) => {
         const p = document.createElement('p');
         p.innerText = category + ': ';
         p.setAttribute('id', 'issue-card-' + category);
@@ -91,26 +92,29 @@
 
         p.appendChild(i);
 
-        this.innerIssueWrapper.appendChild(p);
+        return p;
       }
+    
+      const _createControlButton = (id, value) => {
+        const btn = document.createElement('button');
+        btn.setAttribute('id', id);
+        btn.innerText = value;
 
-      // create elements 
+        return btn;
+      }
 
       // issue_title
       const issueTitle = document.createElement('h3');
-      issueTitle.innerText = issue.issue_title;
-
-      this.innerIssueWrapper.appendChild(issueTitle);
+      issueTitle.innerText = issue.issue_title;      
+      
+      elements.push(issueTitle);
 
       // issue_text
       const issueText = document.createElement('p');
-      issueText.innerText = issue.issue_text;
+      issueText.innerText = issue.issue_text;      
 
-      this.innerIssueWrapper.appendChild(issueText);
-
-      // status_text
-      const statusText = createIssueLabel('status text', issue.status_text);
-
+      elements.push(issueText);
+      
       // open 
       const openDiv = document.createElement('div');
       openDiv.setAttribute('id', 'open-div');
@@ -125,19 +129,52 @@
       openDiv.appendChild(open);
       openDiv.appendChild(openBtn);
 
-      this.innerIssueWrapper.appendChild(openDiv);
-
-      // created_by
-      const createdBy = createIssueLabel('created by', issue.created_by);
-
-      // assigned_to
-      const assignedTo = createIssueLabel('assigned to', issue.assigned_to);
+      elements.push(openDiv);
       
-      // created_on
-      const createdOn = createIssueLabel('created on', issue.created_on);
+      // labels
+      const labelParameters = [
+        {
+          category: 'status text',
+          value: issue.status_text
+        },
+        {
+          category: 'created by',
+          value: issue.created_by
+        },
+        {
+          category: 'assigned to',
+          value: issue.assigned_to
+        },
+        {
+          category: 'created on',
+          value: issue.created_on
+        },
+        {
+          category: 'updated on',
+          value: issue.updated_on
+        },
+      ];
 
-      // updated_on
-      const updatedOn = createIssueLabel('updated on', issue.updated_on);
+      labelParameters.forEach(label => {
+        const elm = _createLabel(label.category, label.value);
+        elements.push(elm);
+      });
+
+      // control buttons 
+      const controlButtonsParams = [
+        { id: 'edit-issue-btn', value: 'edit' },
+        { id: 'delete-issue-btn', value: 'delete' }
+      ];
+
+      controlButtonsParams.forEach(btn => {
+        const elm = _createControlButton(btn.id, btn.value);
+        elements.push(elm);
+      });
+
+      // render 
+      elements.forEach(elm => {
+        this.innerIssueWrapper.append(elm);
+      });
     },
     renderErrorScreen: function(message) {
       // error screen 
