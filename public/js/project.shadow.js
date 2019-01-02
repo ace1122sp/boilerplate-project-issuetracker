@@ -80,228 +80,27 @@
 
       return data;
     },
-    render: function() {
-      this.divLoading.style.display = 'none';
-      this.project.style.display = 'flex';
-
-      this.renderIssueList();
-      this.renderIssueView();
-    },
-    renderIssueList: function() {
-      const issues = octopus.getIssues();
-      const ul = document.createElement('ul');
-
-      issues.forEach(issue => {
-        const { issue_title: title, _id, open } = issue;
-        let li = this._createListItem(title, _id, open);
-
-        // eventListener
-        li.addEventListener('click', function () {
-          view.renderIssueCard(_id);
-        });
-
-        ul.appendChild(li);
-      });
-
-      this.issueList.appendChild(ul);
-    },
-    renderIssueView: function() {                
-      this.projectHeadline.innerText = this.title.innerText;
-    },
-    renderIssueAddForm: function () {
+    _generateForm: function(wrapperId, title, formId, formCb, formElements) {
       const wrapper = document.createElement('div');
-      const id = 'add-issue-section';
 
-      wrapper.setAttribute('id', id);
+      wrapper.setAttribute('id', wrapperId);
       wrapper.setAttribute('class', 'form-section');
 
       const childElements = [];
 
       const h3 = document.createElement('h3');
-      h3.innerText = 'Add Issue';
+      h3.innerText = title;
 
       childElements.push(h3);
 
-      const form = document.createElement('form'); // refactor this      
-      form.setAttribute('id', 'add-issue-form');
+      const form = document.createElement('form'); 
+      form.setAttribute('id', formId);
 
       form.addEventListener('submit', e => {
-        e.preventDefault();
-
-        octopus.addIssue(this._composeReqBody(e.target)); /// RESUME FROM HERE
-
-        // remove add form
-        this.removeSectionsByClass('form-section');
+        formCb(e);
       });
-
-      // create inner form sections
-      const _createFormSection = param => {
-        const div = document.createElement('div');
-        div.setAttribute('class', 'inner-form-div');
-
-        const label = document.createElement('label');
-        label.setAttribute('for', param.inputId);
-        label.innerText = param.label;
-
-        const input = document.createElement('input');
-        const attributes = [['type', 'text'], ['name', param.inputName], ['id', param.inputId], ['required', param.required]];
-        attributes.forEach(attr => {
-          if (attr[0] === 'required' && attr[1] === false) return;
-          input.setAttribute(attr[0], attr[1]);
-        });
-
-        [label, input].forEach(elm => {
-          div.appendChild(elm);
-        });
-
-        return div;
-      }
-
-      const formElements = [
-        {
-          inputId: 'add-issue-form-title',
-          inputName: 'issue_title',
-          label: 'issue title: ',
-          required: true
-        },
-        {
-          inputId: 'add-issue-form-text',
-          inputName: 'issue_text',
-          label: 'issue text: ',
-          required: true
-        },
-        {
-          inputId: 'add-issue-form-created-by',
-          inputName: 'created_by',
-          label: 'created by: ',
-          required: true
-        },
-        {
-          inputId: 'add-issue-form-assigned-to',
-          inputName: 'assigned_to',
-          label: 'assigned to: ',
-          required: false
-        },
-        {
-          inputId: 'add-issue-form-status-text',
-          inputName: 'status_text',
-          label: 'status text: ',
-          required: false
-        },
-      ];
-
-      formElements.forEach(elm => {
-        let element = _createFormSection(elm);
-        form.appendChild(element);
-      });
-
-      const _generateControlButtons = val => {
-        const btn = document.createElement('button');
-        btn.innerText = val;
-
-        return btn;
-      }
-      // add submit button to form
-      const submitBtn = _generateControlButtons('add');
-      form.appendChild(submitBtn);
-
-      childElements.push(form);
-
-      // cancel and close form
-      const cancelBtn = _generateControlButtons('cancel');
-      cancelBtn.addEventListener('click', () => {
-        this.removeSectionsByClass('form-section');
-      });
-
-      childElements.push(cancelBtn);
-
-      // append child elements to wrapper
-      childElements.forEach(elm => {
-        wrapper.appendChild(elm);
-      });
-
-      // render 
-      this.main.appendChild(wrapper);
-    },
-    removeSectionsByClass: function(className) {
-      const sections = document.getElementsByClassName(className);
-      const length = sections.length;
-
-      for (let i = 0; i < length; i++)  {
-        sections[i].parentNode.removeChild(sections[i]);
-      }
-    },
-    renderFilterForm: function () {
-      const wrapper = document.createElement('div');
-      const id = 'filter-issues-div';
-
-      wrapper.setAttribute('id', id);
-      wrapper.setAttribute('class', 'form-section');
-
-      const childElements = [];
-
-      const h3 = document.createElement('h3');
-      h3.innerText = 'Filter Issues';
-
-      childElements.push(h3);
-
-      const form = document.createElement('form'); // refactor this      
-      form.setAttribute('id', 'filter-issues-form');
-
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-
-        octopus.getIssues(this._composeReqBody(e.target)); /// RESUME FROM HERE
-
-        // remove add form
-        this.removeSectionsByClass('form-section');
-      });
-
 
       // add input elements
-      const formElements = [
-        {
-          inputId: 'filter-title',
-          inputName: 'issue_title',
-          label: 'issue title: '
-        },
-        {
-          inputId: 'filter-text',
-          inputName: 'issue_text',
-          label: 'issue text: '
-        },
-        {
-          inputId: 'filter-created-by',
-          inputName: 'created_by',
-          label: 'created by: '
-        },
-        {
-          inputId: 'filter-assigned-to',
-          inputName: 'assigned_to',
-          label: 'assigned to: '
-        },
-        {
-          inputId: 'filter-status-text',
-          inputName: 'status_text',
-          label: 'status text: '
-        },
-        {
-          inputId: 'filter-created-on',
-          inputName: 'created_on',
-          label: 'created on: '
-        },
-        {
-          inputId: 'filter-updated-on',
-          inputName: 'updated_on',
-          label: 'updated on: '
-        },
-        {
-          inputId: 'open',
-          inputName: 'open',
-          label: 'open: '
-        }
-      ];
-
       const _createFormSection = param => {
         const div = document.createElement('div');
         div.setAttribute('class', 'inner-form-div');
@@ -357,6 +156,143 @@
 
       // render filter form
       this.main.appendChild(wrapper);
+    },
+    render: function() {
+      this.divLoading.style.display = 'none';
+      this.project.style.display = 'flex';
+
+      this.renderIssueList();
+      this.renderIssueView();
+    },
+    renderIssueList: function() {
+      const issues = octopus.getIssues();
+      const ul = document.createElement('ul');
+
+      issues.forEach(issue => {
+        const { issue_title: title, _id, open } = issue;
+        let li = this._createListItem(title, _id, open);
+
+        // eventListener
+        li.addEventListener('click', function () {
+          view.renderIssueCard(_id);
+        });
+
+        ul.appendChild(li);
+      });
+
+      this.issueList.appendChild(ul);
+    },
+    renderIssueView: function() {                
+      this.projectHeadline.innerText = this.title.innerText;
+    },
+    renderIssueAddForm: function() {
+      const wrapperId = 'add-issue-section';
+      const title = 'Add Issue';
+      const formId = 'add-issue-form';
+      const formCb = e => {
+        e.preventDefault();
+        octopus.addIssue(this._composeReqBody(e.target));
+
+        // remove add form
+        this.removeSectionsByClass('form-section');
+      };
+      const formElements = [
+        {
+          inputId: 'add-issue-form-title',
+          inputName: 'issue_title',
+          label: 'issue title: ',
+          required: true
+        },
+        {
+          inputId: 'add-issue-form-text',
+          inputName: 'issue_text',
+          label: 'issue text: ',
+          required: true
+        },
+        {
+          inputId: 'add-issue-form-created-by',
+          inputName: 'created_by',
+          label: 'created by: ',
+          required: true
+        },
+        {
+          inputId: 'add-issue-form-assigned-to',
+          inputName: 'assigned_to',
+          label: 'assigned to: ',
+          required: false
+        },
+        {
+          inputId: 'add-issue-form-status-text',
+          inputName: 'status_text',
+          label: 'status text: ',
+          required: false
+        },
+      ];
+
+      this._generateForm(wrapperId, title, formId, formCb, formElements);
+    },
+    removeSectionsByClass: function(className) {
+      const sections = document.getElementsByClassName(className);
+      const length = sections.length;
+
+      for (let i = 0; i < length; i++)  {
+        sections[i].parentNode.removeChild(sections[i]);
+      }
+    },
+    renderFilterForm: function() {
+      const formElements = [
+        {
+          inputId: 'filter-title',
+          inputName: 'issue_title',
+          label: 'issue title: '
+        },
+        {
+          inputId: 'filter-text',
+          inputName: 'issue_text',
+          label: 'issue text: '
+        },
+        {
+          inputId: 'filter-created-by',
+          inputName: 'created_by',
+          label: 'created by: '
+        },
+        {
+          inputId: 'filter-assigned-to',
+          inputName: 'assigned_to',
+          label: 'assigned to: '
+        },
+        {
+          inputId: 'filter-status-text',
+          inputName: 'status_text',
+          label: 'status text: '
+        },
+        {
+          inputId: 'filter-created-on',
+          inputName: 'created_on',
+          label: 'created on: '
+        },
+        {
+          inputId: 'filter-updated-on',
+          inputName: 'updated_on',
+          label: 'updated on: '
+        },
+        {
+          inputId: 'open',
+          inputName: 'open',
+          label: 'open: '
+        }
+      ];
+      const wrapperId = 'filter-issues-div';
+      const title = 'Filter Issues';
+      const formId = 'filter-issues-form';
+      const formCb = e => {
+        e.preventDefault();
+        octopus.getIssues(this._composeReqBody(e.target));
+
+        // remove add form
+        this.removeSectionsByClass('form-section');
+      };
+      this._generateForm(wrapperId, title, formId, formCb, formElements);
     },
     renderIssueCard: function(issueId) {      
       const issue = octopus.getIssue(issueId);
