@@ -15,7 +15,6 @@
         });
     }, 
     getIssues: function(filters) {
-      console.log(filters);
       return this.issues;
     },
     getIssue: function(id) {
@@ -25,7 +24,11 @@
       // fetch new issue      
       console.log(issue);
     },
-    editIssue: function() {},
+    editIssue: function(edits) {
+      // to fetch put request
+      console.log('updates');
+      console.log(edits);
+    },
     removeIssue: function(id) {
       console.log(`issue with id -> ${id} will be deleted`);
       // fetch delete request here
@@ -137,7 +140,7 @@
         return btn;
       }
 
-      const submitBtn = _generateControlButtons('filter');
+      const submitBtn = _generateControlButtons('submit');
       form.appendChild(submitBtn);
 
       childElements.push(form);
@@ -200,33 +203,74 @@
         {
           inputId: 'add-issue-form-title',
           inputName: 'issue_title',
-          label: 'issue title: ',
+          label: 'issue title: ',          
           required: true
         },
         {
           inputId: 'add-issue-form-text',
           inputName: 'issue_text',
           label: 'issue text: ',
-          required: true
+          required: true          
         },
         {
           inputId: 'add-issue-form-created-by',
           inputName: 'created_by',
           label: 'created by: ',
-          required: true
+          required: true          
         },
         {
           inputId: 'add-issue-form-assigned-to',
           inputName: 'assigned_to',
           label: 'assigned to: ',
-          required: false
+          required: false 
         },
         {
           inputId: 'add-issue-form-status-text',
           inputName: 'status_text',
           label: 'status text: ',
           required: false
+        }        
+      ];
+
+      this._generateForm(wrapperId, title, formId, formCb, formElements);
+    },
+    renderIssueEditForm: function() {
+      const wrapperId = 'edit-issue-section';
+      const title = 'Edit Issue';
+      const formId = 'edit-issue-form';
+      const formCb = e => {
+        e.preventDefault();
+        octopus.editIssue(this._composeReqBody(e.target));
+
+        // remove edit form 
+        this.removeSectionsByClass('form-section');
+      };
+      const formElements = [
+        {
+          inputId: 'edit-issue-form-title',
+          inputName: 'issue_title',
+          label: 'issue title: '          
         },
+        {
+          inputId: 'edit-issue-form-text',
+          inputName: 'issue_text',
+          label: 'issue text: '          
+        },
+        {
+          inputId: 'edit-issue-form-created-by',
+          inputName: 'created_by',
+          label: 'created by: '          
+        },
+        {
+          inputId: 'edit-issue-form-assigned-to',
+          inputName: 'assigned_to',
+          label: 'assigned to: '          
+        },
+        {
+          inputId: 'edit-issue-form-status-text',
+          inputName: 'status_text',
+          label: 'status text: '          
+        }
       ];
 
       this._generateForm(wrapperId, title, formId, formCb, formElements);
@@ -240,6 +284,16 @@
       }
     },
     renderFilterForm: function() {
+      const wrapperId = 'filter-issues-section';
+      const title = 'Filter Issues';
+      const formId = 'filter-issues-form';
+      const formCb = e => {
+        e.preventDefault();
+        octopus.getIssues(this._composeReqBody(e.target));
+
+        // remove add form
+        this.removeSectionsByClass('form-section');
+      };
       const formElements = [
         {
           inputId: 'filter-title',
@@ -282,16 +336,7 @@
           label: 'open: '
         }
       ];
-      const wrapperId = 'filter-issues-div';
-      const title = 'Filter Issues';
-      const formId = 'filter-issues-form';
-      const formCb = e => {
-        e.preventDefault();
-        octopus.getIssues(this._composeReqBody(e.target));
-
-        // remove add form
-        this.removeSectionsByClass('form-section');
-      };
+      
       this._generateForm(wrapperId, title, formId, formCb, formElements);
     },
     renderIssueCard: function(issueId) {      
@@ -378,6 +423,10 @@
 
       // control buttons 
       const editBtn = _createControlButton('edit-issue-btn', 'edit');
+
+      editBtn.addEventListener('click', () => {
+        this.renderIssueEditForm();
+      });
       
       const deleteBtn = _createControlButton('delete-issue-btn', 'delete');
       deleteBtn.addEventListener('click', () => {
@@ -432,6 +481,9 @@
     },
     addIssue: function(issue) {
       model.addIssue(issue);
+    },
+    editIssue: function(edits) {
+      model.editIssue(edits);
     },
     removeIssue: function(id) {
       model.removeIssue(id);
