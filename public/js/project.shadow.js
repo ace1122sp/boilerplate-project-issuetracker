@@ -14,7 +14,8 @@
           throw new Error('oops something went wrong');
         });
     }, 
-    getIssues: function() {
+    getIssues: function(filters) {
+      console.log(filters);
       return this.issues;
     },
     getIssue: function(id) {
@@ -107,10 +108,10 @@
     renderIssueView: function() {                
       this.projectHeadline.innerText = this.title.innerText;
     },
-    renderIssueAddForm: function() {
+    renderIssueAddForm: function () {
       const wrapper = document.createElement('div');
       const id = 'add-issue-section';
-      
+
       wrapper.setAttribute('id', id);
       wrapper.setAttribute('class', 'form-section');
 
@@ -123,11 +124,11 @@
 
       const form = document.createElement('form'); // refactor this      
       form.setAttribute('id', 'add-issue-form');
-      
-      form.addEventListener('submit', e => {
-        e.preventDefault();              
 
-        octopus.addIssue(this._composeReqBody.target); /// RESUME FROM HERE
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        octopus.addIssue(this._composeReqBody(e.target)); /// RESUME FROM HERE
 
         // remove add form
         this.removeSectionsByClass('form-section');
@@ -147,7 +148,7 @@
         attributes.forEach(attr => {
           if (attr[0] === 'required' && attr[1] === false) return;
           input.setAttribute(attr[0], attr[1]);
-        });      
+        });
 
         [label, input].forEach(elm => {
           div.appendChild(elm);
@@ -194,22 +195,20 @@
         form.appendChild(element);
       });
 
-      const _generateControlButtons = btn => {
-        const { attr, attrVal, innerText } = btn;
-        const button = document.createElement('button');
-        button.setAttribute(attr, attrVal);
-        button.innerText = innerText;
+      const _generateControlButtons = val => {
+        const btn = document.createElement('button');
+        btn.innerText = val;
 
-        return button;
+        return btn;
       }
       // add submit button to form
-      const submitBtn = _generateControlButtons({ attr: 'type', attrVal: 'submit', innerText: 'add' });
+      const submitBtn = _generateControlButtons('add');
       form.appendChild(submitBtn);
 
       childElements.push(form);
 
       // cancel and close form
-      const cancelBtn = _generateControlButtons({ attr: 'id', attrVal: 'cancel-adding-issue-btn', innerText: 'cancel' });    
+      const cancelBtn = _generateControlButtons('cancel');
       cancelBtn.addEventListener('click', () => {
         this.removeSectionsByClass('form-section');
       });
@@ -232,10 +231,10 @@
         sections[i].parentNode.removeChild(sections[i]);
       }
     },
-    renderFilterForm: function() {
+    renderFilterForm: function () {
       const wrapper = document.createElement('div');
       const id = 'filter-issues-div';
-      
+
       wrapper.setAttribute('id', id);
       wrapper.setAttribute('class', 'form-section');
 
@@ -243,11 +242,24 @@
 
       const h3 = document.createElement('h3');
       h3.innerText = 'Filter Issues';
-      
+
       childElements.push(h3);
 
+      const form = document.createElement('form'); // refactor this      
+      form.setAttribute('id', 'filter-issues-form');
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        octopus.getIssues(this._composeReqBody(e.target)); /// RESUME FROM HERE
+
+        // remove add form
+        this.removeSectionsByClass('form-section');
+      });
+
+
       // add input elements
-      const labels = [
+      const formElements = [
         {
           inputId: 'filter-title',
           inputName: 'issue_title',
@@ -289,36 +301,36 @@
           label: 'open: '
         }
       ];
-      
-      const _generateInputDivs = input => {
-        const { inputId, inputName, label } = input;
-        
+
+      const _createFormSection = param => {
         const div = document.createElement('div');
-        
-        const labelElm = document.createElement('label');
-        labelElm.setAttribute('for', inputId);
-        labelElm.innerText = label;
+        div.setAttribute('class', 'inner-form-div');
 
-        div.appendChild(labelElm);
+        const label = document.createElement('label');
+        label.setAttribute('for', param.inputId);
+        label.innerText = param.label;
 
-        const inputElm = document.createElement('input');
-        const inputAttrs = [['type', 'text'], ['id', inputId], ['name', inputName]];
-        inputAttrs.forEach(attr => {
-          inputElm.setAttribute(attr[0], attr[1]);
+        const input = document.createElement('input');
+        const attributes = [['type', 'text'], ['name', param.inputName], ['id', param.inputId], ['required', param.required]];
+        attributes.forEach(attr => {
+          if (attr[0] === 'required' && (attr[1] === false || attr[1] === undefined)) return;
+          input.setAttribute(attr[0], attr[1]);
         });
 
-        div.appendChild(inputElm);
+        [label, input].forEach(elm => {
+          div.appendChild(elm);
+        });
 
-        return div
+        return div;
       }
 
-      labels.forEach(l => {
-        const inputDiv = _generateInputDivs(l);
-        childElements.push(inputDiv);
+      formElements.forEach(elm => {
+        let element = _createFormSection(elm);
+        form.appendChild(element);
       });
 
       // add control buttons
-  
+
       const _generateControlButtons = val => {
         const btn = document.createElement('button');
         btn.innerText = val;
@@ -326,29 +338,17 @@
         return btn;
       }
 
-      const okBtn = _generateControlButtons('ok');
-      okBtn.addEventListener('click', () => {
-        // add some logic here 
-      });
+      const submitBtn = _generateControlButtons('filter');
+      form.appendChild(submitBtn);
 
-      form.addEventListener('submit', e => {
-        e.preventDefault();
+      childElements.push(form);
 
-        octopus.addIssue(this._composeReqBody.target); /// RESUME FROM HERE
-
-        // remove add form
-        this.removeSectionsByClass('form-section');
-      });
-      
       const cancelBtn = _generateControlButtons('cancel');
       cancelBtn.addEventListener('click', () => {
-        this.removeSectionsByClass('form-section');        
+        this.removeSectionsByClass('form-section');
       });
 
-      const buttons = [okBtn, cancelBtn];
-      buttons.forEach(btn => {
-        childElements.push(btn);
-      });
+      childElements.push(cancelBtn);
 
       // append child elements to wrapper
       childElements.forEach(elm => {
@@ -488,8 +488,8 @@
         view.renderErrorScreen(err.message);
       });
     },
-    getIssues: function() {
-      return model.getIssues();
+    getIssues: function(filters = {}) {
+      return model.getIssues(filters);
     },
     getIssue: function(id) {
       return model.getIssue(id);
