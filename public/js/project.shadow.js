@@ -2,8 +2,16 @@
   const project = location.pathname.slice(1).toString();
   
   const model = {
-    init: function() {
-      return fetch(`/api/issues/${project}`)
+    fetchIssues: function(filters = {}) {
+      let url = `/api/issues/${project}?`; // --------------------------- DONE DONE DONE
+
+      // append filters to url      
+      for(let filter in filters) {
+        url += `${filter}=${filters[filter]}&`;
+      }
+      
+      // this method will only get issues from the server
+      return fetch(url)
         .then(function(res) {
           return res.json();
         })
@@ -14,23 +22,30 @@
           throw new Error('oops something went wrong');
         });
     }, 
-    getIssues: function(filters) {
+    getIssues: function() {
+      
+      // returns locally stored issues, does not comunicate with the server --------------------- DONE DONE DONE
       return this.issues;
-    },
+    },    
     getIssue: function(id) {
+      
+      //filters local issue store -------------------------- DONE DONE DONE
       return this.issues.filter(issue => issue._id === id)[0];
     },
     addIssue: function(issue) {
-      // fetch new issue      
+      
+      // fetch new issue to the server
       console.log(issue);
     },
     editIssue: function(edits) {
-      // to fetch put request
+      
+      // fetch put request to update the issue with sent fields
       console.log('updates');
       console.log(edits);
     },
     removeIssue: function(id) {
       console.log(`issue with id -> ${id} will be deleted`);
+      
       // fetch delete request here
     }
   };
@@ -289,7 +304,7 @@
       const formId = 'filter-issues-form';
       const formCb = e => {
         e.preventDefault();
-        octopus.getIssues(this._composeReqBody(e.target));
+        octopus.fetchIssues(this._composeReqBody(e.target));
 
         // remove add form
         this.removeSectionsByClass('form-section');
@@ -466,7 +481,7 @@
   const octopus = {
     init: function() {
       view.init();
-      model.init()
+      this.fetchIssues()
       .then(() => {
         view.render();
       })
@@ -474,8 +489,11 @@
         view.renderErrorScreen(err.message);
       });
     },
-    getIssues: function(filters = {}) {
-      return model.getIssues(filters);
+    fetchIssues: function(filters = {}) {
+      return model.fetchIssues(filters);
+    },
+    getIssues: function() {
+      return model.getIssues();
     },
     getIssue: function(id) {
       return model.getIssue(id);
