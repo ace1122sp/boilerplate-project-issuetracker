@@ -425,6 +425,7 @@
       const editBtn = _createControlButton('edit-issue-btn', 'edit');
 
       editBtn.addEventListener('click', () => {
+        this.removeSectionsByClass('form-section');
         this.renderIssueEditForm();
       });
       
