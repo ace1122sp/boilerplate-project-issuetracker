@@ -186,6 +186,12 @@
       const issues = octopus.getIssues();
       const ul = document.createElement('ul');
 
+      // clear issueList
+      const prevUl = document.querySelectorAll('.issue-list ul');
+      for (let u = 0; u < prevUl.length; u++) {
+        prevUl[u].parentElement.removeChild(prevUl[u]);
+      }
+
       issues.forEach(issue => {
         const { issue_title: title, _id, open } = issue;
         let li = this._createListItem(title, _id, open);
@@ -304,10 +310,17 @@
       const formId = 'filter-issues-form';
       const formCb = e => {
         e.preventDefault();
-        octopus.fetchIssues(this._composeReqBody(e.target));
-
-        // remove add form
-        this.removeSectionsByClass('form-section');
+        octopus.fetchIssues(this._composeReqBody(e.target))
+          .then(() => {
+            this.renderIssueList();
+            return
+          })
+          .catch(() => {})
+          .then(() => {
+            
+            // remove add form
+            this.removeSectionsByClass('form-section');
+          });          
       };
       const formElements = [
         {
