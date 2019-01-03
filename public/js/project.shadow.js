@@ -2,6 +2,10 @@
   const project = location.pathname.slice(1).toString();
   
   const model = {
+    universalErrorHandler: function(e) {
+      // throw new Error('oops something went wrong');
+      throw e;
+    },
     fetchIssues: function(filters = {}) {
       let url = `/api/issues/${project}?`; // --------------------------- DONE DONE DONE
 
@@ -12,18 +16,16 @@
       
       // this method will only get issues from the server
       return fetch(url)
-        .then(function(res) {
-          return res.json();
-        })
+        .then(res => res.json())
         .then(res => {
           this.issues = [...res];
         })
         .catch(function(err) {
-          throw new Error('oops something went wrong');
+          this.universalErrorHandler();
         });
     }, 
     getIssues: function() {
-      
+
       // returns locally stored issues, does not comunicate with the server --------------------- DONE DONE DONE
       return this.issues;
     },    
@@ -35,7 +37,22 @@
     addIssue: function(issue) {
       
       // fetch new issue to the server
-      console.log(issue);
+      const url = `/api/issues/${project}`;
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(issue),
+        headers: { 'Content-Type': 'application/json' }
+      };
+
+      return fetch(url, options)
+        .then(res => res.json())
+        .then(res => {
+          this.issues.push(res);          
+          return res;
+        })
+        .catch(e => {
+          this.universalErrorHandler(e);
+        });
     },
     editIssue: function(edits) {
       
@@ -44,9 +61,22 @@
       console.log(edits);
     },
     removeIssue: function(id) {
-      console.log(`issue with id -> ${id} will be deleted`);
-      
+    
       // fetch delete request here
+      const url = `/api/issues/${project}/${id}`;
+      const options = {
+        method: 'DELETE'
+      };
+
+      return fetch(url, options)
+        .then(res => res.json())
+        .then(res => {
+          this.issues.filter(issue => issue !== id);
+          return res;
+        })
+        .catch(e => {
+          this.universalErrorHandler(e);
+        });
     }
   };
   const view = {
@@ -81,7 +111,7 @@
     _createListItem: function(title, _id, open) {
       const li = document.createElement('li');
       const openCloseClass = open ? 'open' : 'closed';
-      li.setAttribute('_id', _id);
+      li.setAttribute('id', _id);
       li.setAttribute('class', openCloseClass);
       li.innerText = title;
 
@@ -215,7 +245,11 @@
       const formId = 'add-issue-form';
       const formCb = e => {
         e.preventDefault();
-        octopus.addIssue(this._composeReqBody(e.target));
+        octopus.addIssue(this._composeReqBody(e.target))
+          .then(issue => {
+            this.renderAddedIssue(issue)
+          })
+          .catch(() => this.renderErrorScreen());
 
         // remove add form
         this.removeSectionsByClass('form-section');
@@ -371,6 +405,9 @@
       const issue = octopus.getIssue(issueId);
       const elements = [];
       
+      // clear the section before render
+      this.innerIssueWrapper.innerHTML = '';
+
       // element generators
       const _createLabel = (category, value) => {
         const p = document.createElement('p');
@@ -459,7 +496,11 @@
       
       const deleteBtn = _createControlButton('delete-issue-btn', 'delete');
       deleteBtn.addEventListener('click', () => {
-        octopus.removeIssue(issue._id);
+        octopus.removeIssue(issue._id)
+          .then(() => {
+            this.removeDeletedIssue(issue._id);
+          })
+          .catch(() => this.renderErrorScreen());
       });
       
       const controlButtons = [editBtn, deleteBtn];
@@ -470,8 +511,26 @@
 
       // render 
       elements.forEach(elm => {
-        this.innerIssueWrapper.append(elm);
+        this.innerIssueWrapper.appendChild(elm);
       });
+    },
+    renderAddedIssue: function(issue) {
+      const ul = document.querySelectorAll('.issue-list ul')[0];
+      const { issue_title: title, _id, open } = issue;
+      const li = this._createListItem(title, _id, open);
+
+      li.addEventListener('click', function() {
+        view.renderIssueCard(_id);
+      });
+
+      ul.appendChild(li);
+    },
+    removeDeletedIssue: function(id) {
+      const li = document.getElementById(id);
+      li.parentElement.removeChild(li);
+      
+      // clear issue card section
+      // RESUME FROM HERE _:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     },
     renderErrorScreen: function(message) {
       // error screen 
@@ -512,13 +571,13 @@
       return model.getIssue(id);
     },
     addIssue: function(issue) {
-      model.addIssue(issue);
+      return model.addIssue(issue);
     },
     editIssue: function(edits) {
       model.editIssue(edits);
     },
     removeIssue: function(id) {
-      model.removeIssue(id);
+      return model.removeIssue(id);
     }
   };
 
