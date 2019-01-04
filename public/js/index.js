@@ -68,7 +68,7 @@
     },
     _createProjectElm: function(project) {
       const container = document.createElement('div');
-      container.setAttribute('class', 'project');
+      container.setAttribute('class', 'project-click-box');
       container.setAttribute('id', project + '-p');
 
       const a = document.createElement('a');

@@ -132,9 +132,7 @@
     },
     _createListItem: function(title, _id, open) {
       const li = document.createElement('li');
-      const openCloseClass = open ? 'open' : 'closed';
       li.setAttribute('id', _id);
-      li.setAttribute('class', openCloseClass);
       li.innerText = title;
 
       return li;
