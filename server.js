@@ -44,13 +44,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Sample front-end
 app.route('/:project/')
   .get(function (req, res) {
-    res.sendFile(path.resolve(__dirname, 'views', 'project.shadow.html'));
+    res.sendFile(path.resolve(__dirname, 'views', 'project.html'));
   });
 
 //Index page (static HTML)
 app.route('/')
   .get(function (req, res) {
-    res.sendFile(process.cwd() + '/views/index.shadow.html');
+    res.sendFile(process.cwd() + '/views/index.html');
   });
 
 //For FCC testing purposes

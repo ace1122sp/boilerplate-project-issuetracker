@@ -5,40 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  
+  <!-- temporary style file -->
+  <link rel="stylesheet" href="public/css/main.css">
+  <link rel="stylesheet" href="public/css/project.css">
 </head>
 <body>
-  <h1>This is project page</h1>
-  <a href="/">go back to home</a>    
-
-  <form action="/api/issues/code101" method="POST">
-    <label for="issue_title">issue title: </label>
-    <input type="text" id="issue_title" name="issue_title">
-    <label for="issue_text">issue text: </label>
-    <input type="text" id="issue_text" name="issue_text">
-    <label for="created_by">created by: </label>
-    <input type="text" id="created_by" name="created_by">
-    <button type="submit">send issue</button>
-  </form>
-
-  <label for="_id">issue to delete id: </label>
-  <input type="text" name="_id" id="_id">
-  <button onclick="deleteIssue()">delete</button>
-
-  <script>    
-    fetch('api/projects/code101')
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err.message));
-
-
-      const deleteIssue = function() {
-        const issue = document.getElementById('_id').value;
-        fetch(`api/issues/code101/${issue}`, { method: 'DELETE' })
-          .then(res => console.log('deleted'))
-          .catch(err => console.error(err.message));
-      }
-  </script>
+  <header>
+    <h1>
+      <a href="/">Issue Tracker</a>
+      <button id='add-issue-btn'>add issue</button>
+    </h1>
+  </header>
+  <main>
+    <div id='loading-div'></div>
+    <div class='project'>
+      <div class='issue-list'>
+        <button id='filter-issues-btn'>filter issues</button>
+      </div>      
+      <div class='issue-view'>
+        <h2></h2>
+        <div class='inner-issue-wrapper'></div>
+      </div>
+    </div>  
+  </main>
+  <footer></footer>
+  <script src="public/js/project.shadow.js"></script>
 </body>
 </html>
