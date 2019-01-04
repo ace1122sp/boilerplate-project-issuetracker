@@ -55,10 +55,32 @@
         });
     },
     editIssue: function(edits) {
-      
+
       // fetch put request to update the issue with sent fields
-      console.log('updates');
-      console.log(edits);
+      const url = `api/issues/${project}`;
+      const options = {
+        method: 'PUT',
+        body: JSON.stringify(edits),
+        headers: { 'Content-Type': 'application/json' }
+      };
+
+      return fetch(url, options)
+        .then(() => {          
+          let updated;
+          this.issues = this.issues.map(issue => {
+            if (issue._id === edits._id) { 
+              for (let e in edits) {
+                issue[e] = edits[e];
+              }
+            }
+            updated = Object.assign({}, issue);
+            return issue;
+          });          
+          return updated;
+        })
+        .catch(e => {
+          this.universalErrorHandler(e);
+        });
     },
     removeIssue: function(id) {
     
@@ -289,13 +311,19 @@
 
       this._generateForm(wrapperId, title, formId, formCb, formElements);
     },
-    renderIssueEditForm: function() {
+    renderIssueEditForm: function(issueId) {
       const wrapperId = 'edit-issue-section';
       const title = 'Edit Issue';
       const formId = 'edit-issue-form';
       const formCb = e => {
         e.preventDefault();
-        octopus.editIssue(this._composeReqBody(e.target));
+        const edits = this._composeReqBody(e.target);
+        edits._id = issueId;
+        octopus.editIssue(edits)
+          .then(issue => {
+            this.renderIssueCard(issue._id);
+          })
+          .catch(() => this.renderErrorScreen());
 
         // remove edit form 
         this.removeSectionsByClass('form-section');
@@ -448,6 +476,20 @@
       open.innerText = issue.open ? 'open' : 'closed';
       const openBtn = document.createElement('button');
       openBtn.setAttribute('id', 'openBtn');
+      openBtn.setAttribute('class', 'open-true');
+      openBtn.addEventListener('click', () => {
+        openBtn.setAttribute('disabled', 'true');
+        octopus.editIssue({ _id: issueId, open: !issue.open })
+          .then(() => {
+            const clsName = !issue.open ? 'open-true' : 'open-false';
+            openBtn.setAttribute('class', clsName);
+            openBtn.removeAttribute('disabled');
+          })
+          .catch(e => {
+            console.log(e);
+            this.renderErrorScreen('something went wrong');
+          });
+      });
       const btnSwitch = document.createElement('i');
       btnSwitch.setAttribute('id', 'btnSwitch');
 
@@ -491,7 +533,7 @@
 
       editBtn.addEventListener('click', () => {
         this.removeSectionsByClass('form-section');
-        this.renderIssueEditForm();
+        this.renderIssueEditForm(issueId);
       });
       
       const deleteBtn = _createControlButton('delete-issue-btn', 'delete');
@@ -530,7 +572,8 @@
       li.parentElement.removeChild(li);
       
       // clear issue card section
-      // RESUME FROM HERE _:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+      this.innerIssueWrapper.innerHTML = '';
+      
     },
     renderErrorScreen: function(message) {
       // error screen 
@@ -538,7 +581,7 @@
       divError.setAttribute('class', 'div-error');
 
       const p = document.createElement('p');
-      p.innerText = message;
+      p.innerText = 'Error has occured: ' + message;
 
       // clear main element
       while (this.main.hasChildNodes()) {
@@ -574,7 +617,7 @@
       return model.addIssue(issue);
     },
     editIssue: function(edits) {
-      model.editIssue(edits);
+      return model.editIssue(edits);
     },
     removeIssue: function(id) {
       return model.removeIssue(id);
