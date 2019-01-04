@@ -7,7 +7,7 @@
       throw e;
     },
     fetchIssues: function(filters = {}) {
-      let url = `/api/issues/${project}?`; // --------------------------- DONE DONE DONE
+      let url = `/api/issues/${project}?`;
 
       // append filters to url      
       for(let filter in filters) {
@@ -26,12 +26,12 @@
     }, 
     getIssues: function() {
 
-      // returns locally stored issues, does not comunicate with the server --------------------- DONE DONE DONE
+      // returns locally stored issues, does not comunicate with the server
       return this.issues;
     },    
     getIssue: function(id) {
       
-      //filters local issue store -------------------------- DONE DONE DONE
+      //filters local issue store
       return this.issues.filter(issue => issue._id === id)[0];
     },
     addIssue: function(issue) {
@@ -375,7 +375,8 @@
         octopus.fetchIssues(this._composeReqBody(e.target))
           .then(() => {
             this.renderIssueList();
-            return
+            this.innerIssueWrapper.innerHTML = '';
+            return;
           })
           .catch(() => {})
           .then(() => {
