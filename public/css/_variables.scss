@@ -1,0 +1,31 @@
+// colors ----------------------------------
+$primary-color: #2196f3;
+$primary-color-dark: #0069c0;
+$primary-color-light: #6ec6ff;
+
+$shadow-color: #e0e0e0;
+$surface-color: #fafafa; // cards, sheets, menus
+$error-color: #ef5350; 
+
+// ## on colors ---> for text and icons that appear in front of areas colored
+
+$on-primary-color: #263238;
+$on-primary-color-dark: #fafafa;
+
+// $on-surface-color: $shadow-color;
+
+// numbers ------------------------------
+$padding: 5px;
+$padding-small: 2px;
+$padding-large: 7px;
+$margin: 5px;
+$h1-size: 2rem;
+$h2-size: 1.5rem;
+$h3-size: 1.3rem;
+$radius: 4px;
+$radius-large: 10px;
+// $text-size: ;
+
+
+// shorthand
+$box-shadow: 1px 1px 5px 1px $shadow-color;
