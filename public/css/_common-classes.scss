@@ -1,13 +1,42 @@
+@import 'variables';
+
 .button-not-emphasized {
   box-shadow: unset;
-  background: $primary-color-light;    
-  color: $on-primary-color;
+  background: transparent;    
+  color: inherit;
   border-radius: $radius-large;
+  transition: all 100ms ease-out;
 }
 
-.button-on-dark {
-  
+.button-not-emphasized:hover {
+  box-shadow: $box-shadow;
+  transform: scale(1.1);
 }
 
+.button-not-emphasized:active {
+  color: $on-primary-color;
+}
 
-// resume from here !!!
+.temp-info-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;  
+  background: $shadow-background;
+}
+
+.temp-info-inner {
+  opacity: 1;
+  background: $on-primary-color-dark;
+  padding: $padding-xl;
+  color: $on-primary-color;
+  border-radius: $radius;
+  font-size: $h3-size;
+  border-top: $border-large solid $primary-color-dark;
+}

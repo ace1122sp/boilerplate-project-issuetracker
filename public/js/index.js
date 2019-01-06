@@ -130,6 +130,7 @@
       div.setAttribute('class', 'temp-info-div');
 
       const p = document.createElement('p');
+      p.setAttribute('class', 'temp-info-inner');
       p.innerText = message;
 
       // render message & remove message after 2sec

@@ -1,0 +1,4 @@
+0 - to handle code chars in project names which go to url
+1 - index.js --> when you try to add empty project name error should 
+	not occur --> just ignore everything, user don't need the 
+	info/message
