@@ -165,12 +165,17 @@ a:hover {
   font-size: 1.6rem;
   margin: 2rem;
   padding: 7px;
-  box-shadow: 1px 1px 5px 1px #e0e0e0; }
+  box-shadow: 1px 1px 5px 1px #e0e0e0;
+  transition: all 100ms ease-in; }
   .project-click-box a {
     flex-grow: 0.8;
     text-overflow: hidden;
     overflow: hidden;
     white-space: nowrap; }
+
+.project-click-box:active {
+  transform: scale(0.98);
+  box-shadow: unset; }
 
 .projects {
   margin: 50px 0;

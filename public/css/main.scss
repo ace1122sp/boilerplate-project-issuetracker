@@ -12,6 +12,7 @@
   margin: 2rem;
   padding: $padding-large;
   box-shadow: $box-shadow;
+  transition: $transition-basic;
 
   a {
     flex-grow: 0.8;     
@@ -19,6 +20,11 @@
     overflow: hidden; 
     white-space: nowrap;
   }
+}
+
+.project-click-box:active {
+  transform: scale(0.98);
+  box-shadow: unset;
 }
 
 .projects {
