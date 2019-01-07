@@ -17,6 +17,21 @@
   color: $on-primary-color;
 }
 
+.button-neutral {
+  box-shadow: unset;
+  background: transparent;
+  color: inherit;
+}
+
+.button-neutral:hover {
+  color: $primary-color;
+  border-bottom: $border-xs dashed $primary-color;
+}
+
+.button-neutral:active {
+  color: $primary-color-dark;
+}
+
 .temp-info-div {
   position: absolute;
   top: 0;

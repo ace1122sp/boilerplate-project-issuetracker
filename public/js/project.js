@@ -211,6 +211,7 @@
       // childElements.push(form);
 
       const cancelBtn = _generateControlButtons('cancel');
+      cancelBtn.setAttribute('class', 'button-neutral');
       cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
         this.removeSectionsByClass('form-section');
