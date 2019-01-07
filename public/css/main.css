@@ -119,6 +119,43 @@ a {
 a:hover {
   color: #0069c0; }
 
+#loading-div {
+  margin: auto;
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-duration: 1000ms;
+  animation-direction: normal;
+  animation-fill-mode: forwards; }
+
+#loading-div::before {
+  content: '';
+  position: absolute;
+  bottom: 30px;
+  width: 40px;
+  height: 40px;
+  border-top-color: #2196f3;
+  border-top-style: solid;
+  border-top-width: 10px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%; }
+
+#loading-div::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  width: 40px;
+  height: 40px;
+  border-bottom-color: #2196f3;
+  border-bottom-style: solid;
+  border-bottom-width: 10px;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%; }
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
 .button-not-emphasized {
   box-shadow: unset;
   background: transparent;
