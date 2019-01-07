@@ -20,7 +20,7 @@ main {
   flex-grow: 1;
   justify-content: center;
   align-items: flex-start;
-  margin: 0;
+  margin: $margin-xl 0;
 }
 
 header {
@@ -83,14 +83,15 @@ a:hover {
 }
 
 footer {
-  background: $primary-color-dark;
-  color: $on-primary-color-dark;
-  padding: $padding-xl;
   display: flex;
   flex-direction: row;  
   justify-content: space-around;
   align-items: center;
+  padding: $padding-xl;
   margin-top: $margin-xl;
+  // opacity: .7;
+  background: transparent;
+  color: $shadow-color;
   box-shadow: $box-shadow-footer;
 
   li, address {
