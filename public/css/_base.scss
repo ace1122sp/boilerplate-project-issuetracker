@@ -82,6 +82,31 @@ a:hover {
   color: $primary-color-dark;
 }
 
+footer {
+  background: $primary-color-dark;
+  color: $on-primary-color-dark;
+  padding: $padding-xl;
+  display: flex;
+  flex-direction: row;  
+  justify-content: space-around;
+  align-items: center;
+  margin-top: $margin-xl;
+  box-shadow: $box-shadow-footer;
+
+  li, address {
+    display: inline;
+    padding: 0 $padding-large;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  a:hover {
+    color: $primary-color-light;
+  }
+}
+
 #loading-div {
   margin: auto;
   animation-name: loading;

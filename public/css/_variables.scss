@@ -3,7 +3,7 @@ $primary-color: #2196f3;
 $primary-color-dark: #0069c0;
 $primary-color-light: #6ec6ff;
 
-$shadow-color: #e0e0e0;
+$shadow-color: #9e9e9e;
 $surface-color: #fafafa; // cards, sheets, menus
 $error-color: #ef5350; 
 
@@ -22,6 +22,7 @@ $padding-large: 7px;
 $padding-xl: 24px;
 $margin: 5px;
 $margin-xl: 50px;
+$border-xs: 1.5px;
 $border-large: 30px;
 $h1-size: 2rem;
 $h2-size: 1.5rem;
@@ -33,4 +34,5 @@ $radius-large: 40px;
 
 // shorthand
 $box-shadow: 1px 1px 5px 1px $shadow-color;
+$box-shadow-footer: 0px -3px 10px 1.5px $shadow-color;
 $transition-basic: all 100ms ease-in;
