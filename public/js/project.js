@@ -208,14 +208,17 @@
       const submitBtn = _generateControlButtons('submit');
       form.appendChild(submitBtn);
 
-      childElements.push(form);
+      // childElements.push(form);
 
       const cancelBtn = _generateControlButtons('cancel');
-      cancelBtn.addEventListener('click', () => {
+      cancelBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         this.removeSectionsByClass('form-section');
       });
 
-      childElements.push(cancelBtn);
+      // childElements.push(cancelBtn);
+      form.appendChild(cancelBtn);
+      childElements.push(form);
 
       // append child elements to wrapper
       childElements.forEach(elm => {
