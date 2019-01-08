@@ -32,6 +32,11 @@
   color: $primary-color-dark;
 }
 
+.no-bottom:hover {
+  color: $primary-color;
+  border-bottom: none;
+}
+
 .button-warning {
   background: $error-color;
   color: $on-primary-color-dark;

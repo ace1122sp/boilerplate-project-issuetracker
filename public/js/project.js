@@ -209,7 +209,7 @@
       form.appendChild(submitBtn);
 
       const cancelBtn = _generateControlButtons('cancel');
-      cancelBtn.setAttribute('class', 'button-neutral');
+      cancelBtn.setAttribute('class', 'button-not-emphasized button-neutral no-bottom');
       cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
         this.removeSectionsByClass('form-section');
@@ -246,6 +246,7 @@
       issues.forEach(issue => {
         const { issue_title: title, _id, open } = issue;
         let li = this._createListItem(title, _id, open);
+        li.setAttribute('class', 'list-item');
 
         // eventListener
         li.addEventListener('click', function () {
@@ -532,7 +533,7 @@
 
       // control buttons 
       const editBtn = _createControlButton('edit-issue-btn', 'edit');
-      editBtn.setAttribute('class', 'button-neutral');
+      editBtn.setAttribute('class', 'button-not-emphasized button-neutral no-bottom');
       editBtn.addEventListener('click', () => {
         this.removeSectionsByClass('form-section');
         this.renderIssueEditForm(issueId);
@@ -563,6 +564,7 @@
       const ul = document.querySelectorAll('.issue-list ul')[0];
       const { issue_title: title, _id, open } = issue;
       const li = this._createListItem(title, _id, open);
+      li.setAttribute('class', 'list-item');
 
       li.addEventListener('click', function() {
         view.renderIssueCard(_id);

@@ -114,7 +114,7 @@ h3 {
   font-size: 1.3rem; }
 
 a {
-  color: #6ec6ff; }
+  color: #2196f3; }
 
 a:hover {
   color: #0069c0; }
@@ -187,6 +187,40 @@ footer {
 
 .button-not-emphasized:active {
   color: #263238; }
+
+.button-neutral {
+  box-shadow: unset;
+  background: transparent;
+  color: inherit; }
+
+.button-neutral:hover {
+  color: #2196f3;
+  border-bottom: 1.5px dashed #2196f3; }
+
+.button-neutral:active {
+  color: #0069c0; }
+
+.no-bottom:hover {
+  color: #2196f3;
+  border-bottom: none; }
+
+.button-warning {
+  background: #ef5350;
+  color: #fafafa; }
+
+.button-warning:hover {
+  background: #fafafa;
+  color: #ef5350; }
+
+.open-true {
+  background: green;
+  color: #fafafa;
+  float: left; }
+
+.open-false {
+  background: #ef5350;
+  color: #fafafa;
+  float: right; }
 
 .temp-info-div {
   position: absolute;

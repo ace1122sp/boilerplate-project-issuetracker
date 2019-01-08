@@ -9,9 +9,29 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  background: $surface-color;
-  margin: 0;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
   min-height: 72vh;
+  box-shadow: $box-shadow;  
+  background: #fafafa;
+  color: $shadow-color;
+}
+
+.form-section h3 {
+  margin-bottom: $margin-xl;
+  color: $on-primary-color;
+  border-bottom: $border-xs dashed $primary-color-light;  
+}
+
+.form-section input {
+  border: none;
+  border-bottom: $border-xs dotted $shadow-color;
+}
+
+.form-section button {
+  position: relative;
+  top: 5px;
 }
 
 #filter-issues-btn {
@@ -27,8 +47,8 @@
   width: 27px;
   height: 15px;
   padding: 0;
-  background: #9e9e9e;
-  box-shadow: unset;
+  background: $surface-color;
+  box-shadow: $box-shadow;
   border-radius: 8px;
 }
 
@@ -36,4 +56,85 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
+}
+
+#open-div {  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+}
+
+.project {
+  flex-direction: row;
+  width: 100vw;
+  margin: 0;  
+
+  h2 {
+    background: linear-gradient(to right, $primary-color 10%, $surface-color 90%);
+    color: $on-primary-color;
+    padding: $padding-large;
+    border-radius: $radius;
+    margin-bottom: $margin-xl;
+    margin-right: $margin;
+    // box-shadow: $box-shadow;
+  }
+}
+
+.issue-list {
+  padding: 0 $padding-xl;
+  width: 200px;
+  // box-shadow: $box-shadow;
+  margin: 0 $margin-xl auto;
+
+  button {
+    margin-bottom: 0 $margin;
+  }
+}
+
+.issue-view {
+  flex-grow: 1;  
+}
+
+.inner-issue-wrapper {
+  box-shadow: $box-shadow;
+  margin-right: $margin-xl;
+  padding: $padding-xl $padding-large;
+
+  h3 {
+    padding-bottom: $padding-large;
+  }
+
+  h3, p {
+    padding-top: $padding-large;
+  }
+
+  p {
+    color: $on-primary-color;
+  }
+
+  p:nth-of-type(1) {
+    border: $border-xs dashed $shadow-color;
+    margin-top: $margin-large;
+    padding: $padding-large;
+  }
+
+  i {
+    color: $shadow-color;
+  }
+
+  button {
+    padding-top: $padding-large;
+  }
+}
+
+.list-item {
+  margin: $margin 0;
+  color: $shadow-color;
+  cursor: pointer;
+}
+
+.list-item:active {
+  color: $primary-color-dark;
 }
