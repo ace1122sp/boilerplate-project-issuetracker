@@ -208,8 +208,6 @@
       const submitBtn = _generateControlButtons('submit');
       form.appendChild(submitBtn);
 
-      // childElements.push(form);
-
       const cancelBtn = _generateControlButtons('cancel');
       cancelBtn.setAttribute('class', 'button-neutral');
       cancelBtn.addEventListener('click', (e) => {
@@ -217,7 +215,6 @@
         this.removeSectionsByClass('form-section');
       });
 
-      // childElements.push(cancelBtn);
       form.appendChild(cancelBtn);
       childElements.push(form);
 
@@ -321,6 +318,7 @@
         e.preventDefault();
         const edits = this._composeReqBody(e.target);
         edits._id = issueId;
+
         octopus.editIssue(edits)
           .then(issue => {
             this.renderIssueCard(issue._id);
@@ -479,22 +477,23 @@
       open.innerText = issue.open ? 'open' : 'closed';
       const openBtn = document.createElement('button');
       openBtn.setAttribute('id', 'openBtn');
-      openBtn.setAttribute('class', 'open-true');
       openBtn.addEventListener('click', () => {
         openBtn.setAttribute('disabled', 'true');
         octopus.editIssue({ _id: issueId, open: !issue.open })
           .then(() => {
-            const clsName = !issue.open ? 'open-true' : 'open-false';
-            openBtn.setAttribute('class', clsName);
+            const clsName = issue.open ? 'open-true' : 'open-false';
+            open.innerText = issue.open ? 'open' : 'closed';
+            btnSwitch.setAttribute('class', clsName);
             openBtn.removeAttribute('disabled');
           })
           .catch(e => {
-            console.log(e);
             this.renderErrorScreen('something went wrong');
           });
       });
-      const btnSwitch = document.createElement('i');
+
+      const btnSwitch = document.createElement('div');
       btnSwitch.setAttribute('id', 'btnSwitch');
+      btnSwitch.setAttribute('class', issue.open ? 'open-true' : 'open-false');
 
       openBtn.appendChild(btnSwitch);
       openDiv.appendChild(open);
@@ -533,13 +532,14 @@
 
       // control buttons 
       const editBtn = _createControlButton('edit-issue-btn', 'edit');
-
+      editBtn.setAttribute('class', 'button-neutral');
       editBtn.addEventListener('click', () => {
         this.removeSectionsByClass('form-section');
         this.renderIssueEditForm(issueId);
       });
       
       const deleteBtn = _createControlButton('delete-issue-btn', 'delete');
+      deleteBtn.setAttribute('class', 'button-warning');
       deleteBtn.addEventListener('click', () => {
         octopus.removeIssue(issue._id)
           .then(() => {
@@ -601,7 +601,7 @@
       view.init();
       this.fetchIssues()
       .then(() => {
-        view.render();
+        view.render();        
       })
       .catch(err => {
         view.renderErrorScreen(err.message);
@@ -626,6 +626,5 @@
       return model.removeIssue(id);
     }
   };
-
   octopus.init();
 })();

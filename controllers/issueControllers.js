@@ -46,7 +46,7 @@ const postIssue = function(req, res) {
 const putIssue = function(req, res) {
   let update = {};
 
-  const allowedFieldsToBeUpdated = ['issue_title', 'issue_text', 'created_by', 'assigned_to', 'status_text'];
+  const allowedFieldsToBeUpdated = ['issue_title', 'issue_text', 'created_by', 'assigned_to', 'status_text', 'open'];
   for (let field in req.body) {
     allowedFieldsToBeUpdated.forEach(val => {
       if (val == field) update[field] = req.body[field];

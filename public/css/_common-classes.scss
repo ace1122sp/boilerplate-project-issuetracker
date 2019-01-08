@@ -32,6 +32,28 @@
   color: $primary-color-dark;
 }
 
+.button-warning {
+  background: $error-color;
+  color: $on-primary-color-dark;
+}
+
+.button-warning:hover {
+  background: $surface-color;
+  color: $error-color;
+}
+
+.open-true {
+  background: green;
+  color: $surface-color;
+  float: left;
+}
+
+.open-false {
+  background: $error-color;
+  color: $surface-color;
+  float: right;
+}
+
 .temp-info-div {
   position: absolute;
   top: 0;

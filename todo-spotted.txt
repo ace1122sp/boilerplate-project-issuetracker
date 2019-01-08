@@ -2,4 +2,5 @@
 1 - index.js --> when you try to add empty project name error should 
 	not occur --> just ignore everything, user don't need the 
 	info/message
-2 - project page's title is project's name 
+2 - project page's title is project's name
+3 - issues list to update on issue editing
