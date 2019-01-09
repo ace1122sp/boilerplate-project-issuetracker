@@ -69,6 +69,7 @@ main {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  overflow-x: hidden;
   justify-content: center;
   align-items: flex-start;
   margin: 50px 0; }
@@ -233,7 +234,11 @@ footer {
   justify-content: center;
   align-items: center;
   margin: 0;
-  background: rgba(64, 123, 191, 0.6); }
+  background: rgba(64, 123, 191, 0.6);
+  animation-name: flash-info;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in; }
 
 .temp-info-inner {
   opacity: 1;
@@ -244,6 +249,15 @@ footer {
   font-size: 1.3rem;
   border-top: 30px solid #0069c0; }
 
+@keyframes flash-info {
+  0% {
+    opacity: 0; }
+  20% {
+    opacity: 1; }
+  80% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
 .project-click-box {
   display: flex;
   flex-direction: row;
@@ -268,5 +282,48 @@ footer {
 
 .projects {
   padding: 24px; }
+
+.adding-project {
+  position: relative;
+  right: 200vw;
+  animation-name: jump-in;
+  animation-duration: 1800ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out; }
+
+@keyframes jump-in {
+  0% {
+    right: 200vw;
+    transform: scale(1.05); }
+  60% {
+    right: -5vw;
+    transform: scale(1.05); }
+  80% {
+    right: 0;
+    transform: scale(1.05); }
+  100% {
+    right: 0;
+    transform: scale(1); } }
+.removing-project {
+  position: relative;
+  left: 0;
+  animation-name: jump-out;
+  animation-duration: 1800ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out; }
+
+@keyframes jump-out {
+  0% {
+    left: 0;
+    transform: scale(1); }
+  60% {
+    left: 0;
+    transform: scale(1.05); }
+  80% {
+    left: -5vw;
+    transform: scale(1.05); }
+  100% {
+    left: 200vw;
+    transform: scale(1.05); } }
 
 /*# sourceMappingURL=main.css.map */

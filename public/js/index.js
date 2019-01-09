@@ -68,7 +68,7 @@
     },
     _createProjectElm: function(project) {
       const container = document.createElement('div');
-      container.setAttribute('class', 'project-click-box');
+      container.setAttribute('class', 'project-click-box adding-project');
       container.setAttribute('id', project + '-p');
 
       const a = document.createElement('a');
@@ -98,13 +98,18 @@
         });
     },
     renderAdd: function(projectName) {
-      let projectElm = this._createProjectElm(projectName);
+      const projectElm = this._createProjectElm(projectName);
       this.projects.appendChild(projectElm);
     },
-    renderRemove: function(projectName) {
+    renderRemove: function(projectName) { 
       const project = document.getElementById(projectName + '-p');
+      project.className += ' removing-project';
+      
       document.removeEventListener('click', octopus.removeProject);
-      this.projects.removeChild(project);
+      const timer = setTimeout(() => {
+        this.projects.removeChild(project);
+        clearTimeout(timer);
+      }, 1650);
     },
     renderErrorScreen: function(message) {
       // error screen 

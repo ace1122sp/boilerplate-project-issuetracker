@@ -71,6 +71,10 @@
   align-items: center;
   margin: 0;  
   background: $shadow-background;
+  animation-name: flash-info;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
 }
 
 .temp-info-inner {
@@ -81,4 +85,19 @@
   border-radius: $radius;
   font-size: $h3-size;
   border-top: $border-large solid $primary-color-dark;
+}
+
+@keyframes flash-info {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

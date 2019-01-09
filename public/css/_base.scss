@@ -18,6 +18,7 @@ main {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  overflow-x: hidden;
   justify-content: center;
   align-items: flex-start;
   margin: $margin-xl 0;
