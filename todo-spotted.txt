@@ -1,7 +1,5 @@
-0 - to handle code chars in project names which go to url
 1 - index.js --> when you try to add empty project name error should 
 	not occur --> just ignore everything, user don't need the 
 	info/message
-2 - project page's title is project's name
-3 - issues list to update on issue editing
 4 - limit inputs
+5 - project url to be randomly generated uuid --> add extra prop to project model

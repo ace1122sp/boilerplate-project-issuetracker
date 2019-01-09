@@ -337,6 +337,7 @@
         octopus.editIssue(edits)
           .then(() => {
             this.renderIssueCard(issueId);
+            this.renderIssueList();
           })
           .catch(() => this.renderErrorScreen());
 
@@ -390,7 +391,7 @@
         octopus.fetchIssues(this._composeReqBody(e.target))
           .then(() => {
             this.renderIssueList();
-            this.innerIssueWrapper.innerHTML = '';
+            this._setDefaultInnerIssueWrapper();
             return;
           })
           .catch(() => {})
