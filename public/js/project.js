@@ -226,12 +226,25 @@
       // render filter form
       this.main.appendChild(wrapper);
     },
+    _setDefaultInnerIssueWrapper: function() {
+
+      // clear 
+      this.innerIssueWrapper.innerHTML = '';
+      
+      // create content
+      const defaultP = document.createElement('p');
+      defaultP.setAttribute('class', 'text-placeholder');
+      defaultP.innerText = 'no issue selected...';
+
+      // render 
+      this.innerIssueWrapper.appendChild(defaultP);
+    },
     render: function() {
       this.divLoading.style.display = 'none';
       this.project.style.display = 'flex';
 
       this.renderIssueList();
-      this.renderIssueView();
+      this.renderIssueView();      
     },
     renderIssueList: function() {
       const issues = octopus.getIssues();
@@ -260,6 +273,7 @@
     },
     renderIssueView: function() {                
       this.projectHeadline.innerText = this.title.innerText;
+      this._setDefaultInnerIssueWrapper();
     },
     renderIssueAddForm: function() {
       const wrapperId = 'add-issue-section';
@@ -321,8 +335,8 @@
         edits._id = issueId;
 
         octopus.editIssue(edits)
-          .then(issue => {
-            this.renderIssueCard(issue._id);
+          .then(() => {
+            this.renderIssueCard(issueId);
           })
           .catch(() => this.renderErrorScreen());
 
@@ -467,6 +481,7 @@
 
       // issue_text
       const issueText = document.createElement('p');
+      issueText.setAttribute('id', 'issue-text');
       issueText.innerText = issue.issue_text;      
 
       elements.push(issueText);
@@ -545,6 +560,7 @@
         octopus.removeIssue(issue._id)
           .then(() => {
             this.removeDeletedIssue(issue._id);
+            this._setDefaultInnerIssueWrapper();
           })
           .catch(() => this.renderErrorScreen());
       });

@@ -331,21 +331,31 @@ footer {
     padding-top: 7px; }
   .inner-issue-wrapper p {
     color: #263238; }
-  .inner-issue-wrapper p:nth-of-type(1) {
-    border: 1.5px dashed #9e9e9e;
-    margin-top: 17px;
-    padding: 7px; }
   .inner-issue-wrapper i {
     color: #9e9e9e; }
-  .inner-issue-wrapper button {
-    padding-top: 7px; }
+
+#edit-issue-btn, #delete-issue-bnt {
+  margin-top: 17px; }
+
+#issue-text {
+  border: 1.5px dashed #9e9e9e;
+  margin-top: 17px;
+  padding: 7px; }
 
 .list-item {
   margin: 5px 0;
   color: #9e9e9e;
   cursor: pointer; }
 
+.list-item:hover {
+  color: #6ec6ff; }
+
 .list-item:active {
   color: #0069c0; }
+
+.text-placeholder {
+  color: #9e9e9e !important;
+  text-align: center;
+  border: none; }
 
 /*# sourceMappingURL=project.css.map */

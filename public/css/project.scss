@@ -5,7 +5,7 @@
   display: none;
 }
 
-.form-section { // kada se prikazuje, podesi da .project opacity 0
+.form-section { 
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -85,7 +85,6 @@
 .issue-list {
   padding: 0 $padding-xl;
   width: 200px;
-  // box-shadow: $box-shadow;
   margin: 0 $margin-xl auto;
 
   button {
@@ -114,20 +113,21 @@
     color: $on-primary-color;
   }
 
-  p:nth-of-type(1) {
+  i {
+    color: $shadow-color;
+  }
+}
+
+
+#edit-issue-btn, #delete-issue-btn {
+  margin-top: $margin-large;
+}
+
+#issue-text {
     border: $border-xs dashed $shadow-color;
     margin-top: $margin-large;
     padding: $padding-large;
   }
-
-  i {
-    color: $shadow-color;
-  }
-
-  button {
-    padding-top: $padding-large;
-  }
-}
 
 .list-item {
   margin: $margin 0;
@@ -135,6 +135,16 @@
   cursor: pointer;
 }
 
+.list-item:hover {
+  color: $primary-color-light;
+}
+
 .list-item:active {
   color: $primary-color-dark;
+}
+
+.text-placeholder {
+  color: $shadow-color !important;
+  text-align: center;
+  border: none;
 }

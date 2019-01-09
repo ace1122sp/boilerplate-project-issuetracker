@@ -4,3 +4,4 @@
 	info/message
 2 - project page's title is project's name
 3 - issues list to update on issue editing
+4 - limit inputs
