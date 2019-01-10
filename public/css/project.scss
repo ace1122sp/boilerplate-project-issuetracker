@@ -11,8 +11,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80vw;
+  width: 60vw;
   min-height: 72vh;
+  margin: auto;  
   box-shadow: $box-shadow;  
   background: #fafafa;
   color: $shadow-color;
@@ -53,6 +54,7 @@
 }
 
 #btnSwitch {
+  position: relative;
   width: 13px;
   height: 13px;
   border-radius: 50%;
@@ -66,7 +68,7 @@
   width: 100px;
 }
 
-.project {
+.project {  
   flex-direction: row;
   width: 100vw;
   margin: 0;  
@@ -84,7 +86,8 @@
 
 .issue-list {
   padding: 0 $padding-xl;
-  width: 200px;
+  width: 15%;  
+  max-width: 200px;
   margin: 0 $margin-xl auto;
 
   button {
@@ -93,12 +96,15 @@
 }
 
 .issue-view {
-  flex-grow: 1;  
+  width: 80%;
+  min-width: 350px;
+  margin: 0 $margin;
 }
 
 .inner-issue-wrapper {
   box-shadow: $box-shadow;
   margin-right: $margin-xl;
+  margin-bottom: $margin;
   padding: $padding-xl $padding-large;
 
   h3 {

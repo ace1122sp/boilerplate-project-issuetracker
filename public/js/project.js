@@ -152,7 +152,7 @@
       const wrapper = document.createElement('div');
 
       wrapper.setAttribute('id', wrapperId);
-      wrapper.setAttribute('class', 'form-section');
+      wrapper.setAttribute('class', 'form-section adding-form');
 
       const childElements = [];
 
@@ -212,7 +212,11 @@
       cancelBtn.setAttribute('class', 'button-not-emphasized button-neutral no-bottom');
       cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        this.removeSectionsByClass('form-section');
+        wrapper.className += ' removing-form';
+        const timer = setTimeout(() => {
+          this.removeSectionsByClass('form-section');
+          clearTimeout(timer);
+        }, 1650);
       });
 
       form.appendChild(cancelBtn);
@@ -283,7 +287,7 @@
         e.preventDefault();
         octopus.addIssue(this._composeReqBody(e.target))
           .then(issue => {
-            this.renderAddedIssue(issue)
+            this.renderAddedIssue(issue); 
           })
           .catch(() => this.renderErrorScreen());
 

@@ -50,13 +50,15 @@
 .open-true {
   background: green;
   color: $surface-color;
-  float: left;
+  left: 0;
+  transition: all 100ms ease-out;
 }
 
 .open-false {
   background: $error-color;
   color: $surface-color;
-  float: right;
+  left: 13.5px;
+  transition: all 100ms ease-out;
 }
 
 .temp-info-div {
@@ -99,5 +101,116 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+.adding-element {
+  position: relative;  
+  right: 200vw;  
+  animation-name: jump-in;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+} 
+
+@keyframes jump-in {
+  0% {
+    right: 200vw;
+    transform: scale(1.05);
+  }
+  60% {
+    right: -5vw;
+    transform: scale(1.05);
+  }
+  80% {
+    right: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    right: 0; 
+    transform: scale(1);
+  }
+}
+
+.removing-element {
+  position: relative;
+  left: 0;
+  animation-name: jump-out;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes jump-out {  
+  0% {
+    left: 0; 
+    transform: scale(1);
+  }
+  20% {
+    left: 0;
+    transform: scale(1.05);
+  }
+  40% {
+    left: -5vw;
+    transform: scale(1.05);
+  }
+  100% {
+    left: 200vw;
+    transform: scale(1.05);
+  }
+}
+
+.adding-form {  
+  right: 200vw;  
+  animation-name: jump-in-form;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes jump-in-form {
+  0% {
+    right: 200vw;
+    transform: scale(1.05);
+  }
+  60% {
+    right: calc(-3%);
+    transform: scale(1.05);
+  }
+  80% {
+    // right: auto;
+    right: calc(10%);
+    transform: scale(1.05);
+  }
+  100% {
+    right: calc(10%); 
+    transform: scale(1);
+  }
+}
+
+.removing-form {  
+  right: calc(10%);
+  animation-name: jump-out-form;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes jump-out-form {  
+  0% {
+    right: calc(10%);     
+    transform: scale(1);
+  }
+  20% {
+    right: calc(10%);    
+    transform: scale(1.05);
+  }
+  40% {
+    right: calc(26%);
+    transform: scale(1.05);
+  }
+  100% {
+    right: -200vw;
+    transform: scale(1.05);
   }
 }

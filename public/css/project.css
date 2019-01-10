@@ -56,7 +56,8 @@ a:active {
 
 html, body {
   margin: 0;
-  min-height: 100vh; }
+  min-height: 100vh;
+  overflow-x: hidden; }
 
 body {
   display: flex;
@@ -69,6 +70,7 @@ main {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  overflow-x: hidden;
   justify-content: center;
   align-items: flex-start;
   margin: 50px 0; }
@@ -215,12 +217,14 @@ footer {
 .open-true {
   background: green;
   color: #fafafa;
-  float: left; }
+  left: 0;
+  transition: all 100ms ease-out; }
 
 .open-false {
   background: #ef5350;
   color: #fafafa;
-  float: right; }
+  left: 13.5px;
+  transition: all 100ms ease-out; }
 
 .temp-info-div {
   position: absolute;
@@ -233,7 +237,11 @@ footer {
   justify-content: center;
   align-items: center;
   margin: 0;
-  background: rgba(64, 123, 191, 0.6); }
+  background: rgba(64, 123, 191, 0.6);
+  animation-name: flash-info;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in; }
 
 .temp-info-inner {
   opacity: 1;
@@ -244,6 +252,97 @@ footer {
   font-size: 1.3rem;
   border-top: 30px solid #0069c0; }
 
+@keyframes flash-info {
+  0% {
+    opacity: 0; }
+  20% {
+    opacity: 1; }
+  80% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+.adding-element {
+  position: relative;
+  right: 200vw;
+  animation-name: jump-in;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out; }
+
+@keyframes jump-in {
+  0% {
+    right: 200vw;
+    transform: scale(1.05); }
+  60% {
+    right: -5vw;
+    transform: scale(1.05); }
+  80% {
+    right: 0;
+    transform: scale(1.05); }
+  100% {
+    right: 0;
+    transform: scale(1); } }
+.removing-element {
+  position: relative;
+  left: 0;
+  animation-name: jump-out;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out; }
+
+@keyframes jump-out {
+  0% {
+    left: 0;
+    transform: scale(1); }
+  20% {
+    left: 0;
+    transform: scale(1.05); }
+  40% {
+    left: -5vw;
+    transform: scale(1.05); }
+  100% {
+    left: 200vw;
+    transform: scale(1.05); } }
+.adding-form {
+  right: 200vw;
+  animation-name: jump-in-form;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out; }
+
+@keyframes jump-in-form {
+  0% {
+    right: 200vw;
+    transform: scale(1.05); }
+  60% {
+    right: calc(-3%);
+    transform: scale(1.05); }
+  80% {
+    right: calc(10%);
+    transform: scale(1.05); }
+  100% {
+    right: calc(10%);
+    transform: scale(1); } }
+.removing-form {
+  right: calc(10%);
+  animation-name: jump-out-form;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out; }
+
+@keyframes jump-out-form {
+  0% {
+    right: calc(10%);
+    transform: scale(1); }
+  20% {
+    right: calc(10%);
+    transform: scale(1.05); }
+  40% {
+    right: calc(26%);
+    transform: scale(1.05); }
+  100% {
+    right: -200vw;
+    transform: scale(1.05); } }
 .project {
   display: none; }
 
@@ -253,8 +352,9 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80vw;
+  width: 60vw;
   min-height: 72vh;
+  margin: auto;
   box-shadow: 1px 1px 5px 1px #9e9e9e;
   background: #fafafa;
   color: #9e9e9e; }
@@ -288,6 +388,7 @@ footer {
   border-radius: 8px; }
 
 #btnSwitch {
+  position: relative;
   width: 13px;
   height: 13px;
   border-radius: 50%; }
@@ -313,17 +414,21 @@ footer {
 
 .issue-list {
   padding: 0 24px;
-  width: 200px;
+  width: 15%;
+  max-width: 200px;
   margin: 0 50px auto; }
   .issue-list button {
     margin-bottom: 0 5px; }
 
 .issue-view {
-  flex-grow: 1; }
+  width: 80%;
+  min-width: 350px;
+  margin: 0 5px; }
 
 .inner-issue-wrapper {
   box-shadow: 1px 1px 5px 1px #9e9e9e;
   margin-right: 50px;
+  margin-bottom: 5px;
   padding: 24px 7px; }
   .inner-issue-wrapper h3 {
     padding-bottom: 7px; }
@@ -334,7 +439,7 @@ footer {
   .inner-issue-wrapper i {
     color: #9e9e9e; }
 
-#edit-issue-btn, #delete-issue-bnt {
+#edit-issue-btn, #delete-issue-btn {
   margin-top: 17px; }
 
 #issue-text {
