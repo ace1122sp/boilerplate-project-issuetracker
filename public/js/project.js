@@ -166,6 +166,11 @@
 
       form.addEventListener('submit', e => {
         formCb(e);
+        wrapper.className += ' removing-form';
+        const timer = setTimeout(() => {
+          this.removeSectionsByClass('form-section');
+          clearTimeout(timer);
+        }, 1650);
       });
 
       // add input elements
@@ -290,9 +295,6 @@
             this.renderAddedIssue(issue); 
           })
           .catch(() => this.renderErrorScreen());
-
-        // remove add form
-        this.removeSectionsByClass('form-section');
       };
       const formElements = [
         {
@@ -344,9 +346,6 @@
             this.renderIssueList();
           })
           .catch(() => this.renderErrorScreen());
-
-        // remove edit form 
-        this.removeSectionsByClass('form-section');
       };
       const formElements = [
         {
@@ -398,12 +397,7 @@
             this._setDefaultInnerIssueWrapper();
             return;
           })
-          .catch(() => {})
-          .then(() => {
-            
-            // remove add form
-            this.removeSectionsByClass('form-section');
-          });          
+          .catch(() => this.renderErrorScreen());
       };
       const formElements = [
         {
