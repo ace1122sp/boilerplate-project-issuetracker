@@ -91,6 +91,7 @@
       this.projects.style.display = '';
 
       const projects = octopus.getProjects();
+      
       // append project to dom
         projects.forEach(project => {
           let projectElement = view._createProjectElm(project);
@@ -163,6 +164,10 @@
       return model.getProjects();
     },
     addProject: function(projectName) {
+      if (projectName.length < 1) {
+        view.renderErrorScreen('Project name required!');
+        return;
+      }
       model.addProject(projectName)
         .then(res => {
           const startIndex = res.message.length - 7;
@@ -172,7 +177,7 @@
           if (status === 'created') view.renderAdd(projectName);          
         })
         .catch(function (err) {
-          console.error(err.message);
+          view.renderErrorScreen('Ooops something went wrong...');
         });
     },
     removeProject: function(projectName) {
@@ -181,7 +186,7 @@
           view.renderRemove(removedProject);
         }) 
         .catch(function (err) {
-          console.error(err.message);
+          view.renderErrorScreen('Ooops something went wrong...');
         });
     }
   }

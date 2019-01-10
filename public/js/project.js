@@ -2,9 +2,9 @@
   const project = location.pathname.slice(1).toString();
   
   const model = {
-    universalErrorHandler: function(e) {
-      // throw new Error('oops something went wrong');
-      throw e;
+    universalErrorHandler: function(err) {
+      console.error(err.message);
+      throw err.message;
     },
     fetchIssues: function(filters = {}) {
       let url = `/api/issues/${project}?`;
@@ -21,7 +21,7 @@
           this.issues = [...res];
         })
         .catch(function(err) {
-          this.universalErrorHandler();
+          this.universalErrorHandler(err);
         });
     }, 
     getIssues: function() {
@@ -50,8 +50,8 @@
           this.issues.push(res);          
           return res;
         })
-        .catch(e => {
-          this.universalErrorHandler(e);
+        .catch(err => {
+          this.universalErrorHandler(err);
         });
     },
     editIssue: function(edits) {
@@ -78,8 +78,8 @@
           });          
           return updated;
         })
-        .catch(e => {
-          this.universalErrorHandler(e);
+        .catch(err => {
+          this.universalErrorHandler(err);
         });
     },
     removeIssue: function(id) {
@@ -96,8 +96,8 @@
           this.issues.filter(issue => issue !== id);
           return res;
         })
-        .catch(e => {
-          this.universalErrorHandler(e);
+        .catch(err => {
+          this.universalErrorHandler(err);
         });
     }
   };
@@ -625,7 +625,10 @@
       });
     },
     fetchIssues: function(filters = {}) {
-      return model.fetchIssues(filters);
+      return model.fetchIssues(filters)
+        .catch(err => {
+          view.renderErrorScreen(err.message);
+        });
     },
     getIssues: function() {
       return model.getIssues();
