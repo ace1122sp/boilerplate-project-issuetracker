@@ -89,6 +89,17 @@
   border-top: $border-large solid $primary-color-dark;
 }
 
+.div-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: $box-shadow;
+  color: $shadow-color;
+  padding: $padding-xl;
+  margin: $margin-xl;
+  font-size: $h3-size;
+}
+
 @keyframes flash-info {
   0% {
     opacity: 0;
