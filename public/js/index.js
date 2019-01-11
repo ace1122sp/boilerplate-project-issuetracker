@@ -33,7 +33,7 @@
           return res;
         })
         .catch(err => {
-          throw new Error('failed to add project');
+          throw new Error('failed to add project...');
         });
     },
     removeProject: function (projectName) {
@@ -165,7 +165,7 @@
     },
     addProject: function(projectName) {
       if (projectName.length < 1) {
-        view.renderErrorScreen('Project name required!');
+        view.renderMessage('Project name required!');
         return;
       }
       model.addProject(projectName)
@@ -176,8 +176,8 @@
           view.renderMessage(res.message);
           if (status === 'created') view.renderAdd(projectName);          
         })
-        .catch(function (err) {
-          view.renderErrorScreen('Ooops something went wrong...');
+        .catch(function(err) {
+          view.renderMessage(err.message);
         });
     },
     removeProject: function(projectName) {
@@ -185,8 +185,8 @@
         .then(removedProject => {
           view.renderRemove(removedProject);
         }) 
-        .catch(function (err) {
-          view.renderErrorScreen('Ooops something went wrong...');
+        .catch(function(err) {
+          view.renderMessage(err.message);
         });
     }
   }

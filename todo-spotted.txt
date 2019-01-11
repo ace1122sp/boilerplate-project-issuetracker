@@ -3,7 +3,7 @@
 	info/message
 4 - limit inputs
 5 - project url to be randomly generated uuid --> add extra prop to project model
-6 - index.js, project.js --> add style
+6 - index.js, project.js --> add style to error screens
 7 - error screen da se pojavi kao flash card
 
 ------

@@ -1,11 +1,7 @@
 ﻿(function() {
   const project = location.pathname.slice(1).toString();
   
-  const model = {
-    universalErrorHandler: function(err) {
-      console.error(err.message);
-      throw err.message;
-    },
+  const model = {    
     fetchIssues: function(filters = {}) {
       let url = `/api/issues/${project}?`;
 
@@ -21,7 +17,7 @@
           this.issues = [...res];
         })
         .catch(function(err) {
-          this.universalErrorHandler(err);
+          throw new Error('oops something went wrong...');
         });
     }, 
     getIssues: function() {
@@ -51,7 +47,7 @@
           return res;
         })
         .catch(err => {
-          this.universalErrorHandler(err);
+          throw new Error('failed to add issue...');
         });
     },
     editIssue: function(edits) {
@@ -79,7 +75,7 @@
           return updated;
         })
         .catch(err => {
-          this.universalErrorHandler(err);
+          throw new Error('failed to edit issue...');
         });
     },
     removeIssue: function(id) {
@@ -97,7 +93,7 @@
           return res;
         })
         .catch(err => {
-          this.universalErrorHandler(err);
+          throw new Error('failed to remove issue...');
         });
     }
   };
@@ -292,9 +288,9 @@
         e.preventDefault();
         octopus.addIssue(this._composeReqBody(e.target))
           .then(issue => {
-            this.renderAddedIssue(issue); 
+            this.renderAddedIssue(issue);
           })
-          .catch(() => this.renderErrorScreen());
+          .catch(err => this.renderMessage(err.message));
       };
       const formElements = [
         {
@@ -345,7 +341,7 @@
             this.renderIssueCard(issueId);
             this.renderIssueList();
           })
-          .catch(() => this.renderErrorScreen());
+          .catch(err => this.renderMessage(err.message));
       };
       const formElements = [
         {
@@ -501,9 +497,7 @@
             btnSwitch.setAttribute('class', clsName);
             openBtn.removeAttribute('disabled');
           })
-          .catch(e => {
-            this.renderErrorScreen('something went wrong');
-          });
+          .catch(err => this.renderMessage(err.message));
       });
 
       const btnSwitch = document.createElement('div');
@@ -561,7 +555,7 @@
             this.removeDeletedIssue(issue._id);
             this._setDefaultInnerIssueWrapper();
           })
-          .catch(() => this.renderErrorScreen());
+          .catch(err => this.renderMessage(err.message));
       });
       
       const controlButtons = [editBtn, deleteBtn];
@@ -601,7 +595,7 @@
       divError.setAttribute('class', 'div-error');
 
       const p = document.createElement('p');
-      p.innerText = 'Error has occured: ' + message;
+      p.innerText = message;
 
       // clear main element
       while (this.main.hasChildNodes()) {
@@ -611,6 +605,25 @@
       // render error message
       divError.appendChild(p);
       this.main.appendChild(divError);
+    },
+    renderMessage: function (message) {
+
+      // message div
+      const div = document.createElement('div');
+      div.setAttribute('class', 'temp-info-div');
+
+      const p = document.createElement('p');
+      p.setAttribute('class', 'temp-info-inner');
+      p.innerText = message;
+
+      // render message & remove message after 2sec
+      div.appendChild(p);
+      this.main.appendChild(div);
+
+      let timeout = setTimeout(() => {
+        this.main.removeChild(div);
+        clearTimeout(timeout);
+      }, 2000);
     }
   };
   const octopus = {
@@ -618,7 +631,7 @@
       view.init();
       this.fetchIssues()
       .then(() => {
-        view.render();        
+        view.render();
       })
       .catch(err => {
         view.renderErrorScreen(err.message);
