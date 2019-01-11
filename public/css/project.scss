@@ -137,6 +137,9 @@
 .list-item {
   margin: $margin 0;
   color: $shadow-color;
+  text-overflow: hidden;
+  overflow: hidden; 
+  white-space: nowrap;
   cursor: pointer;
 }
 

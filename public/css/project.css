@@ -460,6 +460,9 @@ footer {
 .list-item {
   margin: 5px 0;
   color: #9e9e9e;
+  text-overflow: hidden;
+  overflow: hidden;
+  white-space: nowrap;
   cursor: pointer; }
 
 .list-item:hover {
