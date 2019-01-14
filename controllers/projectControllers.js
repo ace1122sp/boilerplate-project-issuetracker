@@ -18,7 +18,6 @@ const getProject = function(req, res) {
     .populate('issues')
     .then(function(rec) {
       if (rec) {
-        console.log(rec);
         res.json(rec);
       } else {
         console.log(rec);

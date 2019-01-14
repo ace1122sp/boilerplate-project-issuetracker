@@ -1,9 +1,9 @@
 ﻿(function() {
   const project = location.pathname.slice(1).toString();
   
-  const model = {    
+  const model = {
     fetchIssues: function(filters = {}) {
-      let url = `/api/issues/${project}?`;
+      let url = `/api/projects/${project}?`;
 
       // append filters to url      
       for(let filter in filters) {
@@ -14,12 +14,18 @@
       return fetch(url)
         .then(res => res.json())
         .then(res => {
-          this.issues = [...res];
+          this.issues = [...res.issues];
+          this.projectName = res.project_name;
         })
         .catch(function(err) {
           throw new Error('oops something went wrong...');
         });
     }, 
+    getProjectName: function () {
+      
+      // returns locally stored project name, does not comunicate with the server
+      return this.projectName;
+    },
     getIssues: function() {
 
       // returns locally stored issues, does not comunicate with the server
@@ -110,9 +116,7 @@
       this.projectHeadline = document.querySelector('.issue-view h2');
       this.innerIssueWrapper = document.getElementsByClassName('inner-issue-wrapper')[0];
       this.addIssueBtn = document.getElementById('add-issue-btn');
-      this.filterIssuesBtn = document.getElementById('filter-issues-btn');
-      
-      this.title.innerText = location.pathname.slice(1).split('%20').join(' ');
+      this.filterIssuesBtn = document.getElementById('filter-issues-btn');          
 
       // event listeners
       this.addIssueBtn.addEventListener('click', () => {
@@ -247,6 +251,7 @@
     render: function() {
       this.divLoading.style.display = 'none';
       this.project.style.display = 'flex';
+      this.title.innerText = octopus.getProjectName();
 
       this.renderIssueList();
       this.renderIssueView();      
@@ -642,6 +647,9 @@
         .catch(err => {
           view.renderErrorScreen(err.message);
         });
+    },
+    getProjectName: function() {      
+      return model.getProjectName();
     },
     getIssues: function() {
       return model.getIssues();

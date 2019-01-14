@@ -17,7 +17,7 @@ const getIssues = function(req, res) {
     });
 }
 const postIssue = function(req, res) {
-  const project_name = req.params.project.toString();
+  const projectId = req.params.project.toString();
   const issue = new Issue({
     issue_title: req.body.issue_title,
     issue_text: req.body.issue_text,
@@ -26,15 +26,15 @@ const postIssue = function(req, res) {
     status_text: req.body.status_text,
     created_on: new Date(),
     updated_on: new Date(),
-    project: project_name
+    project: projectId
   });
 
   issue.save()
     .then(function(doc) {
-      Project.findOneAndUpdate({ project_name }, { $push: { issues: doc._id } })
+      Project.findByIdAndUpdate(projectId, { $push: { issues: doc._id } })
       .then(function(proj) {
-        console.log('issue created: ', doc);      
-        res.json(doc);      
+        console.log('issue created: ', doc);              
+        res.json(doc);              
       }); // catch ??
     })
     .catch(function(err) {
