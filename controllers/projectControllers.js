@@ -2,7 +2,7 @@ const Project = require('../models/project');
 
 const getProjects = function(req, res) {
   Project.find({})
-    .select({ project_name: 1, _id: 0 })
+    .select({ project_name: 1 })
     .then(function(recs) {
       console.log('projects returned'); // limit ???      
       res.json({ projects: recs });
@@ -13,8 +13,8 @@ const getProjects = function(req, res) {
     });
 }
 const getProject = function(req, res) {
-  const project_name = req.params.project.toString();
-  Project.findOne({ project_name })
+  const projectId = req.params.project.toString();
+  Project.findById(projectId)
     .populate('issues')
     .then(function(rec) {
       if (rec) {
@@ -46,7 +46,7 @@ const addProject = function(req, res) {
           .then(rec => {
             let message = `project ${rec.project_name} created`;
             console.log(message);
-            res.json({ message });
+            res.json({ message, _id: rec._id });
           })
           .catch(err => {
             console.error(err.message);
@@ -60,14 +60,14 @@ const addProject = function(req, res) {
     });
 }
 const removeProject = function(req, res) {
-  const project_name = req.params.project.toString();
-  Project.findOneAndDelete({ project_name })
+  const projectId = req.params.project.toString();
+  Project.findByIdAndDelete(projectId)
     .then(rec => {
       let message;
       if (rec) {
         message = `project ${rec.project_name} deleted`;
       } else {
-        message = `project ${project_name} not found`;        
+        message = `project ${projectId} not found`;        
       }
       console.log(message);
       res.json({ message });

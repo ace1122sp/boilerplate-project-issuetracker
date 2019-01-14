@@ -7,7 +7,7 @@
           return res.json();
         })
         .then(res => {
-          this.projects = res.projects.map(project => project.project_name);
+          this.projects = res.projects.map(project => [project.project_name, project._id]);
           return;
         })
         .catch(function(err) {
@@ -28,20 +28,20 @@
       };
       return fetch('/api/projects', options)
         .then(res => res.json())
-        .then(res => {
-          this.projects.push(project_name);
+        .then(res => {          
+          this.projects.push([project_name, res._id]);
           return res;
         })
         .catch(err => {
           throw new Error('failed to add project...');
         });
     },
-    removeProject: function (projectName) {
+    removeProject: function (id) {
       // headers ???
-      return fetch(`/api/projects/${projectName}`, { method: 'DELETE' })
+      return fetch(`/api/projects/${id}`, { method: 'DELETE' })
         .then(() => {
-          this.projects = this.projects.filter(project => project !== projectName);
-          return projectName;
+          this.projects = this.projects.filter(project => project[1] !== id);
+          return id;
         })
         .catch(error => {
           throw new Error('failed to remove project');
@@ -69,16 +69,16 @@
     _createProjectElm: function(project) {
       const container = document.createElement('div');
       container.setAttribute('class', 'project-click-box adding-element');
-      container.setAttribute('id', project + '-p');
+      container.setAttribute('id', project[1]);
 
       const a = document.createElement('a');
-      a.setAttribute('href', `/${project}`);
-      a.innerText = project;
+      a.setAttribute('href', `/${project[1]}`);
+      a.innerText = project[0];
 
       const btn = document.createElement('button');
       btn.innerText = 'X';
       btn.addEventListener('click', function() {
-        octopus.removeProject(project);
+        octopus.removeProject(project[1]);
       });
 
       container.appendChild(a);
@@ -102,8 +102,8 @@
       const projectElm = this._createProjectElm(projectName);
       this.projects.appendChild(projectElm);
     },
-    renderRemove: function(projectName) { 
-      const project = document.getElementById(projectName + '-p');
+    renderRemove: function(id) { 
+      const project = document.getElementById(id);
       project.className += ' removing-element';
       
       document.removeEventListener('click', octopus.removeProject);
@@ -155,6 +155,7 @@
       model.init()
         .then(() => {
           view.render();
+          console.log(model.projects);
         })
         .catch(function (err) {
           view.renderErrorScreen(err.message);
@@ -174,16 +175,16 @@
           const status = res.message.slice(startIndex);
 
           view.renderMessage(res.message);
-          if (status === 'created') view.renderAdd(projectName);          
+          if (status === 'created') view.renderAdd([projectName, res._id]);          
         })
         .catch(function(err) {
           view.renderMessage(err.message);
         });
     },
-    removeProject: function(projectName) {
-      model.removeProject(projectName)
-        .then(removedProject => {
-          view.renderRemove(removedProject);
+    removeProject: function(id) {
+      model.removeProject(id)
+        .then(id => {
+          view.renderRemove(id);
         }) 
         .catch(function(err) {
           view.renderMessage(err.message);
