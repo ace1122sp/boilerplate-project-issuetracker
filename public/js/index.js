@@ -155,7 +155,6 @@
       model.init()
         .then(() => {
           view.render();
-          console.log(model.projects);
         })
         .catch(function (err) {
           view.renderErrorScreen(err.message);

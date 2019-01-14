@@ -120,17 +120,28 @@
 
       // event listeners
       this.addIssueBtn.addEventListener('click', () => {
-        this.removeSectionsByClass('form-section');
-        this.renderIssueAddForm();
+        this._switchForms(this.renderIssueAddForm.bind(this));
       });
 
-      this.filterIssuesBtn.addEventListener('click', () => {
-        this.removeSectionsByClass('form-section');
-        this.renderFilterForm();
+      this.filterIssuesBtn.addEventListener('click', () => {        
+        this._switchForms(this.renderFilterForm.bind(this));       
       });
 
     },
-    _createListItem: function(title, _id, open) {
+    _switchForms: function(cb) {
+      const wrapper = document.getElementsByClassName('form-section')[0];
+      if (wrapper) {
+        wrapper.className += ' removing-form';
+        const timer = setTimeout(() => {
+          this.removeSectionsByClass('form-section');
+          cb();
+          clearTimeout(timer);
+        }, 1650);
+      } else {
+        cb();
+      }
+    },
+    _createListItem: function(title, _id) {
       const li = document.createElement('li');
       li.setAttribute('id', _id);
       li.innerText = title;
@@ -268,7 +279,7 @@
 
       issues.forEach(issue => {
         const { issue_title: title, _id, open } = issue;
-        let li = this._createListItem(title, _id, open);
+        let li = this._createListItem(title, _id);
         li.setAttribute('class', 'list-item');
 
         // eventListener
@@ -549,8 +560,9 @@
       editBtn.setAttribute('class', 'button-not-emphasized button-neutral no-bottom');
       editBtn.addEventListener('click', () => {
         this.removeSectionsByClass('form-section');
-        this.renderIssueEditForm(issueId);
+        this._switchForms(this.renderIssueEditForm.bind(this, issueId));       
       });
+
       
       const deleteBtn = _createControlButton('delete-issue-btn', 'delete');
       deleteBtn.setAttribute('class', 'button-warning');
