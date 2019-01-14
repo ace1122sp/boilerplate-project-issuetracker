@@ -1,6 +1,0 @@
-
-4 - limit inputs
-5 - project url to be randomly generated uuid --> add extra prop to project model
-
-------
-current: handling errors on client
