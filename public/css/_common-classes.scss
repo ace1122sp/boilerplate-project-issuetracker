@@ -189,12 +189,11 @@
     transform: scale(1.05);
   }
   80% {
-    // right: auto;
     right: calc(10%);
     transform: scale(1.05);
   }
   100% {
-    right: calc(10%); 
+    right: calc(10%);
     transform: scale(1);
   }
 }
@@ -225,3 +224,5 @@
     transform: scale(1.05);
   }
 }
+
+@import 'common-classes.resp';

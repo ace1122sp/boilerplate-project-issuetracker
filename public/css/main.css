@@ -176,6 +176,10 @@ footer {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+main {
+  position: relative;
+  margin: 17px 0; }
+
 .button-not-emphasized {
   box-shadow: unset;
   background: transparent;

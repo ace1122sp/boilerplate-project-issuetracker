@@ -116,11 +116,18 @@
       this.projectHeadline = document.querySelector('.issue-view h2');
       this.innerIssueWrapper = document.getElementsByClassName('inner-issue-wrapper')[0];
       this.addIssueBtn = document.getElementById('add-issue-btn');
+      this.issueListBtn = document.getElementById('issue-list-btn');
       this.filterIssuesBtn = document.getElementById('filter-issues-btn');          
 
       // event listeners
       this.addIssueBtn.addEventListener('click', () => {
         this._switchForms(this.renderIssueAddForm.bind(this));
+      });
+
+      this.issueListBtn.addEventListener('click', () => {
+        
+        // toggle list display by adding/removing class
+        this.issueList.classList.toggle('show-list');
       });
 
       this.filterIssuesBtn.addEventListener('click', () => {        

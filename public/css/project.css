@@ -176,6 +176,10 @@ footer {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+main {
+  position: relative;
+  margin: 17px 0; }
+
 .button-not-emphasized {
   box-shadow: unset;
   background: transparent;
@@ -475,5 +479,108 @@ footer {
   color: #9e9e9e !important;
   text-align: center;
   border: none; }
+
+#issue-list-btn {
+  display: none; }
+
+@media (max-width: 550px) {
+  .project {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; }
+    .project h2 {
+      margin: 0 0 50px;
+      width: 100%; }
+
+  .issue-list {
+    display: none;
+    max-width: unset;
+    margin: 0; }
+
+  .list-item {
+    margin: 17px; }
+
+  .show-list {
+    position: absolute;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background: #fafafa;
+    box-shadow: 1px 1px 5px 1px #9e9e9e;
+    box-sizing: border-box;
+    animation-name: scroll;
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+    transform-origin: top center;
+    perspective: 1000px;
+    perspective-origin: 0 -200%; }
+    .show-list button {
+      margin-bottom: 50px; }
+
+  @keyframes scroll {
+    0% {
+      transform: rotateX(-90deg); }
+    100% {
+      transform: rotateX(0); } }
+  @keyframes jump-in-form {
+    0% {
+      right: 200vw;
+      left: -200vw;
+      transform: scale(1.05); }
+    60% {
+      right: calc(-3%);
+      left: calc(23%);
+      transform: scale(1.05); }
+    80% {
+      right: calc(10%);
+      left: calc(10%);
+      transform: scale(1.05); }
+    100% {
+      right: calc(10%);
+      left: calc(10%);
+      transform: scale(1); } }
+  @keyframes jump-out-form {
+    0% {
+      right: calc(10%);
+      left: calc(10%);
+      transform: scale(1); }
+    20% {
+      right: calc(10%);
+      left: calc(10%);
+      transform: scale(1.05); }
+    40% {
+      right: calc(26%);
+      left: calc(-6%);
+      transform: scale(1.05); }
+    100% {
+      right: -200vw;
+      left: 200vw;
+      transform: scale(1.05); } }
+  .issue-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+
+  .inner-issue-wrapper {
+    margin: auto; }
+
+  #issue-list-btn {
+    display: initial; }
+
+  .form-section {
+    padding: 24px;
+    width: auto;
+    min-height: 60vh;
+    padding: 24px;
+    transform: translateY(calc(50%)); } }
 
 /*# sourceMappingURL=project.css.map */
