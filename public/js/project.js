@@ -559,7 +559,6 @@
       const editBtn = _createControlButton('edit-issue-btn', 'edit');
       editBtn.setAttribute('class', 'button-not-emphasized button-neutral no-bottom');
       editBtn.addEventListener('click', () => {
-        this.removeSectionsByClass('form-section');
         this._switchForms(this.renderIssueEditForm.bind(this, issueId));       
       });
 
