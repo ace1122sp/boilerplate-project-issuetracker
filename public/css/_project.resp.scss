@@ -60,52 +60,6 @@
     }
   }
 
-  @keyframes jump-in-form {
-  0% {
-    right: 200vw;
-    left: -200vw;
-    transform: scale(1.05);
-  }
-  60% {
-    right: calc(-3%);
-    left: calc(23%);
-    transform: scale(1.05);
-  }
-  80% {
-    right: calc(10%);
-    left: calc(10%);
-    transform: scale(1.05);
-  }
-  100% {
-    right: calc(10%);
-    left: calc(10%);
-    transform: scale(1);
-  }
-}
-
-@keyframes jump-out-form {  
-  0% {
-    right: calc(10%);
-    left: calc(10%);
-    transform: scale(1);
-  }
-  20% {
-    right: calc(10%);    
-    left: calc(10%);
-    transform: scale(1.05);
-  }
-  40% {
-    right: calc(26%);
-    left: calc(-6%);
-    transform: scale(1.05);
-  }
-  100% {
-    right: -200vw;
-    left: 200vw;
-    transform: scale(1.05);
-  }
-}
-
   .issue-view {
     display: flex;
     flex-direction: column;
