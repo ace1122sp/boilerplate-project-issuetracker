@@ -105,7 +105,8 @@
   };
   const view = {
     init: function() {
-      // dom
+
+      // dom      
       this.title = document.getElementsByTagName('title')[0];
       this.main = document.getElementsByTagName('main')[0];
       this.divLoading = document.getElementById('loading-div');
@@ -133,7 +134,7 @@
       this.filterIssuesBtn.addEventListener('click', () => {        
         this._switchForms(this.renderFilterForm.bind(this));       
       });
-
+      
     },
     _switchForms: function(cb) {
       const wrapper = document.getElementsByClassName('form-section')[0];

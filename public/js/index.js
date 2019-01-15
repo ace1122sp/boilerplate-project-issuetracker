@@ -50,7 +50,7 @@
   }
   const view = {
     init: function () {
-
+      
       // dom
       this.main = document.getElementsByTagName('main')[0];
       this.divLoading = document.getElementById('loading-div');
