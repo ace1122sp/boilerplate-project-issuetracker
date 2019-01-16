@@ -19,11 +19,11 @@ const getIssues = function(req, res) {
 const postIssue = function(req, res) {
   const projectId = req.params.project.toString();
   const issue = new Issue({
-    issue_title: req.body.issue_title,
-    issue_text: req.body.issue_text,
-    created_by: req.body.created_by,
-    assigned_to: req.body.assigned_to,
-    status_text: req.body.status_text,
+    issue_title: req.body.issue_title.toString(),
+    issue_text: req.body.issue_text.toString(),
+    created_by: req.body.created_by.toString(),
+    assigned_to: req.body.assigned_to.toString(),
+    status_text: req.body.status_text.toString(),
     created_on: new Date(),
     updated_on: new Date(),
     project: projectId

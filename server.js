@@ -28,14 +28,14 @@ mongoose.connect(process.env.DB, mongoOptions)
   .then(() => console.log('connected successfully to mongodb'))
   .catch(err => {
     console.error(err.stack);
-    process.exit(1);
+    // process.exit(1);
   });
 
 const app = express();
 
 app.use(express.static(process.cwd() + '/public'));
 
-app.use(cors({origin: '*'})); //For FCC testing purposes only
+// app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(helmet());
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
