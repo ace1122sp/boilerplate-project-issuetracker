@@ -12,13 +12,17 @@
       
       // this method will only get issues from the server
       return fetch(url)
-        .then(res => res.json())
+        .then(res => {
+          if (res.ok) return res.json();
+          throw new Error(res.statusText);
+        })
         .then(res => {
           this.issues = [...res.issues];
           this.projectName = res.project_name;
+          return { hasError: false };
         })
         .catch(function(err) {
-          throw new Error('oops something went wrong...');
+          return { hasError: true, statusText: err.message };
         });
     }, 
     getProjectName: function () {
@@ -654,18 +658,19 @@
     init: function() {
       view.init();
       this.fetchIssues()
-      .then(() => {
-        view.render();
+      .then(res => {        
+        if (res.hasError) {
+          view.renderErrorScreen(res.statusText)
+        } else {
+          view.render();
+        }
       })
       .catch(err => {
-        view.renderErrorScreen(err.message);
+        view.renderErrorScreen('oops something went wrong...');
       });
     },
     fetchIssues: function(filters = {}) {
       return model.fetchIssues(filters)
-        .catch(err => {
-          view.renderErrorScreen(err.message);
-        });
     },
     getProjectName: function() {      
       return model.getProjectName();
