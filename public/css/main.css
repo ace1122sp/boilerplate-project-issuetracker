@@ -176,15 +176,15 @@ footer {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
-main {
-  position: relative;
-  margin: 0;
-  padding-bottom: 7px;
-  max-height: unset; }
+@media (max-width: 550px) {
+  main {
+    position: relative;
+    margin: 0;
+    padding-bottom: 7px;
+    max-height: unset; }
 
-body {
-  font-size: 10px; }
-
+  body {
+    font-size: 10px; } }
 .button-not-emphasized {
   box-shadow: unset;
   background: transparent;

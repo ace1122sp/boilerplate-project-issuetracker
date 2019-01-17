@@ -1,12 +1,14 @@
 @import 'variables';
 
-main {
-  position: relative;
-  margin: 0;
-  padding-bottom: $padding-large;
-  max-height: unset;  
-}
+@media (max-width: 550px) {
+  main {
+    position: relative;
+    margin: 0;
+    padding-bottom: $padding-large;
+    max-height: unset;  
+  }
 
-body {
-  font-size: 10px;
+  body {
+    font-size: 10px;
+  }
 }
