@@ -12,13 +12,16 @@
       
       // this method will only get issues from the server
       return fetch(url)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error(res.statusText);
+          return res.json();
+        })
         .then(res => {
           this.issues = [...res.issues];
-          this.projectName = res.project_name;
+          this.projectName = res.project_name;          
         })
         .catch(function(err) {
-          throw new Error('oops something went wrong...');
+          return { hasError: true, statusText: err.message };
         });
     }, 
     getProjectName: function () {
@@ -417,7 +420,7 @@
             this._setDefaultInnerIssueWrapper();
             return;
           })
-          .catch(() => this.renderErrorScreen());
+          .catch(() => this.renderErrorScreen('ooops something went wrong...'));
       };
       const formElements = [
         {
@@ -654,18 +657,16 @@
     init: function() {
       view.init();
       this.fetchIssues()
-      .then(() => {
+      .then(res => {
+        if (res.hasError) return view.renderErrorScreen(res.statusText);
         view.render();
       })
-      .catch(err => {
-        view.renderErrorScreen(err.message);
+      .catch(err => {  
+        view.renderErrorScreen('oops something went wrong...');
       });
     },
     fetchIssues: function(filters = {}) {
       return model.fetchIssues(filters)
-        .catch(err => {
-          view.renderErrorScreen(err.message);
-        });
     },
     getProjectName: function() {      
       return model.getProjectName();
