@@ -178,7 +178,12 @@ footer {
     transform: rotate(360deg); } }
 main {
   position: relative;
-  margin: 17px 0; }
+  margin: 0;
+  padding-bottom: 7px;
+  max-height: unset; }
+
+body {
+  font-size: 10px; }
 
 .button-not-emphasized {
   box-shadow: unset;

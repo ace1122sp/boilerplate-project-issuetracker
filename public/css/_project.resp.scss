@@ -5,7 +5,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; 
+    position: relative;
 
     h2 {
       margin: 0 0 $margin-xl;
@@ -64,6 +64,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: unset;
+    padding-top: $padding-large;
   }
 
   .inner-issue-wrapper {    
@@ -78,6 +80,8 @@
     padding: $padding-xl;
     width: auto;
     min-height: 60vh;
+    margin-top: $margin-large;
+    margin-bottom: $margin-large;
     padding: $padding-xl;
     transform: translateY(calc(50%));
   }

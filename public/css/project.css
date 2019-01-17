@@ -178,7 +178,12 @@ footer {
     transform: rotate(360deg); } }
 main {
   position: relative;
-  margin: 17px 0; }
+  margin: 0;
+  padding-bottom: 7px;
+  max-height: unset; }
+
+body {
+  font-size: 10px; }
 
 .button-not-emphasized {
   box-shadow: unset;
@@ -542,7 +547,9 @@ main {
   .issue-view {
     display: flex;
     flex-direction: column;
-    align-items: center; }
+    align-items: center;
+    min-width: unset;
+    padding-top: 7px; }
 
   .inner-issue-wrapper {
     margin: auto; }
@@ -554,6 +561,8 @@ main {
     padding: 24px;
     width: auto;
     min-height: 60vh;
+    margin-top: 17px;
+    margin-bottom: 17px;
     padding: 24px;
     transform: translateY(calc(50%)); } }
 
