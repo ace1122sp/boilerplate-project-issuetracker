@@ -37,6 +37,11 @@ app.use(express.static(process.cwd() + '/public'));
 
 // app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"]
+  }
+}));
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
