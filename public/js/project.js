@@ -3,7 +3,7 @@
   
   const model = {
     fetchIssues: function(filters = {}) {
-      let url = `/api/projects/${project}?`;
+      let url = `/api/issues/${project}?`;
 
       // append filters to url      
       for(let filter in filters) {

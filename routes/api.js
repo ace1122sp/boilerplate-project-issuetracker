@@ -10,13 +10,13 @@
 
 const expect = require('chai').expect;
 
-const { getIssues, postIssue, putIssue, deleteIssue } = require('../controllers/issueControllers');
+const { getIssues, postIssue, putIssue, deleteIssue, addProjectName } = require('../controllers/issueControllers');
 const { getProjects, addProject, removeProject, getProject } = require('../controllers/projectControllers');
 
 module.exports = function (app) {
 
   app.route('/api/issues/:project')  
-    .get(getIssues)    
+    .get(getIssues, addProjectName)    
     .post(postIssue)    
     .put(putIssue)    
     

@@ -2,20 +2,36 @@ const Project = require('../models/project');
 const Issue = require('../models/issue');
 
 // validation and sanitize middlewares will pass only valid req
-const getIssues = function(req, res) {
+const getIssues = function(req, res, next) {
   const filters = req.query; // this needs to be sanitized
   filters.project = req.params.project;
 
   Issue.find(filters)
     .then(function(recs) {
-      console.log('all issues returned');
-      res.json(recs);
+      // res.json(recs);
+      res.locals.recs = recs;
+      next();
     })
     .catch(function(err) {
       console.error(err.message);
       res.sendStatus(500);
     });
 }
+
+const addProjectName = function (req, res) {
+  const project = req.params.project;
+
+  Project.findById(project)
+    .then(function(rec) {
+      const response = { issues: res.locals.recs, project_name: rec.project_name };
+      res.json(response);
+    })
+    .catch(function(err) {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
+}
+
 const postIssue = function(req, res) {
   const projectId = req.params.project.toString();
   const issue = new Issue({
@@ -97,5 +113,6 @@ module.exports = {
   getIssues, 
   postIssue,
   putIssue,
-  deleteIssue
+  deleteIssue,
+  addProjectName
 };
